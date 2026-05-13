@@ -3,6 +3,17 @@
  */
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+
+const MOBILE_MODEL_PATH = '/static/models/bluemi_12_5g_lowpoly_game_asset.glb';
+const MOBILE_DEVICE_LAYOUT = [
+  { position: [-9.5, 1.75, -4.5], rotation: [-0.22, 0.48, 0.12], targetHeight: 1.25 },
+  { position: [8.25, 2.15, -5.5], rotation: [0.16, -0.54, -0.08], targetHeight: 1.1 },
+  { position: [-4.75, 2.65, 6.75], rotation: [-0.12, 0.72, 0.18], targetHeight: 1.05 },
+  { position: [10.5, 1.95, 4.0], rotation: [0.2, -0.36, -0.14], targetHeight: 1.15 },
+  { position: [-11.0, 3.05, 2.5], rotation: [-0.18, 0.62, 0.1], targetHeight: 1.0 },
+  { position: [5.75, 1.55, -8.0], rotation: [0.1, 0.24, -0.06], targetHeight: 1.35 },
+];
 
 const root = document.getElementById('walltech-3d-story');
 if (!root) {
@@ -93,6 +104,71 @@ function createCylinder(radiusTop, radiusBottom, height, segments, color, positi
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   return mesh;
+}
+
+function prepareLoadedMesh(object) {
+  object.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+}
+
+function fitModelToHeight(model, targetHeight) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const scale = targetHeight / Math.max(size.y, 0.001);
+  model.scale.setScalar(scale);
+  model.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+  return scale;
+}
+
+function createFloatingDeviceWrapper(model, layout) {
+  const wrapper = new THREE.Group();
+  wrapper.add(model);
+  wrapper.userData.isFloatingDevice = true;
+  wrapper.userData.floatPhase = Math.random() * Math.PI * 2;
+  wrapper.userData.floatSpeed = 0.28 + Math.random() * 0.22;
+  wrapper.userData.floatRadius = 0.1 + Math.random() * 0.14;
+  wrapper.userData.hoverOffset = layout.position[1];
+  wrapper.userData.baseX = layout.position[0];
+  wrapper.userData.baseZ = layout.position[2];
+  wrapper.position.set(...layout.position);
+  wrapper.rotation.set(...layout.rotation);
+
+  const shadow = new THREE.Mesh(
+    new THREE.CircleGeometry(0.55, 32),
+    new THREE.MeshBasicMaterial({ color: 0x0a0a0a, transparent: true, opacity: 0.28 })
+  );
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.position.set(0, -0.42, 0);
+  shadow.userData.isContactShadow = true;
+  wrapper.add(shadow);
+
+  return wrapper;
+}
+
+function loadMobileDeviceModels(group) {
+  const loader = new GLTFLoader();
+  loader.load(
+    MOBILE_MODEL_PATH,
+    (gltf) => {
+      const template = gltf.scene;
+      prepareLoadedMesh(template);
+
+      MOBILE_DEVICE_LAYOUT.forEach((layout) => {
+        const model = template.clone(true);
+        fitModelToHeight(model, layout.targetHeight);
+        group.add(createFloatingDeviceWrapper(model, layout));
+      });
+    },
+    undefined,
+    (error) => {
+      console.warn('Mobile GLB failed to load:', error);
+    }
+  );
 }
 
 // ============================================
@@ -273,49 +349,6 @@ function createFloatingMobileDevices(zOffset) {
   ground.position.y = -0.35;
   ground.receiveShadow = true;
   group.add(ground);
-
-  function createDevice(width, height, depth, position, rotation, screenColor) {
-    const deviceGroup = new THREE.Group();
-    deviceGroup.userData.isFloatingDevice = true;
-    deviceGroup.userData.floatPhase = Math.random() * Math.PI * 2;
-    deviceGroup.userData.floatSpeed = 0.28 + Math.random() * 0.22;
-    deviceGroup.userData.floatRadius = 0.1 + Math.random() * 0.14;
-    deviceGroup.userData.hoverOffset = position[1];
-    deviceGroup.userData.baseX = position[0];
-    deviceGroup.userData.baseZ = position[2];
-
-    const shell = createBox(width, height, depth, 0x101318, [0, 0, 0]);
-    shell.material.metalness = 0.7;
-    shell.material.roughness = 0.25;
-    deviceGroup.add(shell);
-
-    const screen = createBox(width * 0.9, height * 0.9, 0.02, screenColor, [0, 0, depth / 2 + 0.01], false);
-    screen.material.emissive = new THREE.Color(screenColor);
-    screen.material.emissiveIntensity = 0.25;
-    deviceGroup.add(screen);
-
-    const uiBlock = createBox(width * 0.72, height * 0.2, 0.01, COLORS.terracotta, [0, height * 0.08, depth / 2 + 0.02], false);
-    uiBlock.material.emissive = new THREE.Color(COLORS.terracotta);
-    uiBlock.material.emissiveIntensity = 0.3;
-    deviceGroup.add(uiBlock);
-
-    deviceGroup.position.set(...position);
-    deviceGroup.rotation.set(...rotation);
-    return deviceGroup;
-  }
-
-  const devices = [
-    [0.64, 1.32, 0.08, [-9.5, 1.75, -4.5], [-0.22, 0.48, 0.12], 0x22304b],
-    [0.56, 1.12, 0.07, [8.25, 2.15, -5.5], [0.16, -0.54, -0.08], 0x2f3f56],
-    [0.52, 1.0, 0.07, [-4.75, 2.65, 6.75], [-0.12, 0.72, 0.18], 0x3a2f4a],
-    [0.6, 1.2, 0.07, [10.5, 1.95, 4.0], [0.2, -0.36, -0.14], 0x1f2f3f],
-    [0.48, 0.98, 0.07, [-11.0, 3.05, 2.5], [-0.18, 0.62, 0.1], 0x2a3a4f],
-    [1.35, 0.92, 0.07, [5.75, 1.55, -8.0], [0.1, 0.24, -0.06], 0x2b3648],
-  ];
-
-  devices.forEach(([width, height, depth, position, rotation, screenColor]) => {
-    group.add(createDevice(width, height, depth, position, rotation, screenColor));
-  });
 
   const ambient = new THREE.AmbientLight(0xc8d8ea, 0.42);
   group.add(ambient);
@@ -640,6 +673,7 @@ chapters.push(createSaulOffice(SCENE_DEPTH * 4));
 chapters.push(createFloatingIslands(SCENE_DEPTH * 5));
 
 chapters.forEach(chapter => scene.add(chapter));
+loadMobileDeviceModels(chapters[2]);
 
 // ============================================
 // SCROLL HANDLING
