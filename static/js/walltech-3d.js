@@ -166,7 +166,80 @@ function createMailroom(zOffset) {
 }
 
 // ============================================
-// CHAPTER 2: MOBILE APPS — FLOATING DEVICES
+// CHAPTER 2: CHUCK'S HOUSE
+// ============================================
+
+function createChucksHouse(zOffset) {
+  const group = new THREE.Group();
+  group.position.z = -zOffset;
+
+  const floor = createBox(20, 0.2, 20, 0x3D2914, [0, -0.1, 0], false);
+  group.add(floor);
+
+  const backWall = createBox(20, 8, 0.3, 0x2D2D2D, [0, 4, -10], false);
+  const leftWall = createBox(0.3, 8, 20, 0x2D2D2D, [-10, 4, 0], false);
+  group.add(backWall, leftWall);
+
+  const window1 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, -4], false);
+  window1.material.metalness = 0.9;
+  window1.material.roughness = 0.3;
+  const window2 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, 3], false);
+  window2.material.metalness = 0.9;
+  window2.material.roughness = 0.3;
+  group.add(window1, window2);
+
+  function createLantern(pos) {
+    const lanternGroup = new THREE.Group();
+    const base = createCylinder(0.1, 0.15, 0.3, 8, 0x8B4513, [0, 0, 0]);
+    const glass = createCylinder(0.1, 0.1, 0.4, 8, 0xFFD700, [0, 0.3, 0]);
+    glass.material.transparent = true;
+    glass.material.opacity = 0.7;
+    glass.material.emissive = new THREE.Color(0xFFD700);
+    glass.material.emissiveIntensity = 0.8;
+    lanternGroup.add(base, glass);
+    lanternGroup.position.set(...pos);
+
+    const lanternLight = new THREE.PointLight(0xFFAA00, 0.8, 8);
+    lanternLight.position.set(0, 0.3, 0);
+    lanternGroup.add(lanternLight);
+
+    return lanternGroup;
+  }
+
+  group.add(createLantern([-3, 1.1, 2]));
+  group.add(createLantern([4, 0.5, -2]));
+
+  const couchBase = createBox(3, 0.5, 1.2, 0x4A3728, [0, 0.25, 0]);
+  const couchBack = createBox(3, 1, 0.3, 0x4A3728, [0, 0.75, -0.55]);
+  const couchArm1 = createBox(0.3, 0.7, 1.2, 0x4A3728, [-1.5, 0.35, 0]);
+  const couchArm2 = createBox(0.3, 0.7, 1.2, 0x4A3728, [1.5, 0.35, 0]);
+  group.add(couchBase, couchBack, couchArm1, couchArm2);
+
+  const pianoBody = createBox(2, 1, 0.8, 0x1A1A1A, [5, 0.5, -7]);
+  const pianoTop = createBox(2.1, 0.1, 0.9, 0x1A1A1A, [5, 1.05, -7]);
+  const pianoKeys = createBox(1.8, 0.05, 0.15, 0xFFFFF0, [5, 1, -6.5]);
+  group.add(pianoBody, pianoTop, pianoKeys);
+
+  const blanket = createBox(2, 0.02, 3, COLORS.foil, [-5, 0.02, 2], false);
+  blanket.material.metalness = 1;
+  blanket.material.roughness = 0.2;
+  group.add(blanket);
+
+  for (let i = 0; i < 6; i++) {
+    const book = createBox(0.2, 0.3, 0.4, [0x8B0000, 0x006400, 0x000080][i % 3],
+      [-2 + i * 0.5, 0.15, 3 + Math.random()]);
+    book.rotation.y = Math.random() * Math.PI;
+    group.add(book);
+  }
+
+  const dimLight = new THREE.AmbientLight(0x1a1a1a, 0.3);
+  group.add(dimLight);
+
+  return group;
+}
+
+// ============================================
+// CHAPTER 3: MOBILE APPS — FLOATING DEVICES
 // ============================================
 
 function createFloatingMobileDevices(zOffset) {
@@ -224,75 +297,6 @@ function createFloatingMobileDevices(zOffset) {
   const screenGlow = new THREE.PointLight(0x6fa8ff, 0.7, 16);
   screenGlow.position.set(0, 2.5, 2);
   group.add(screenGlow);
-
-  return group;
-}
-
-// ============================================
-// CHAPTER 3: THE COURTHOUSE
-// ============================================
-
-function createCourthouse(zOffset) {
-  const group = new THREE.Group();
-  group.position.z = -zOffset;
-
-  // Marble floor
-  const floor = createBox(30, 0.3, 30, 0xF5F5DC, [0, -0.15, 0], false);
-  floor.material.roughness = 0.2;
-  floor.material.metalness = 0.1;
-  group.add(floor);
-
-  // Grand columns
-  for (let i = 0; i < 6; i++) {
-    const column = createCylinder(0.5, 0.5, 8, 16, 0xFAF0E6, [-7.5 + i * 3, 4, -8]);
-    column.material.roughness = 0.3;
-    group.add(column);
-
-    // Column base
-    const base = createBox(1.2, 0.5, 1.2, 0xFAF0E6, [-7.5 + i * 3, 0.25, -8]);
-    group.add(base);
-
-    // Column capital
-    const capital = createBox(1.2, 0.4, 1.2, 0xFAF0E6, [-7.5 + i * 3, 8.2, -8]);
-    group.add(capital);
-  }
-
-  // Entablature (top beam)
-  const topBeam = createBox(20, 0.8, 1.5, 0xFAF0E6, [0, 8.8, -8]);
-  group.add(topBeam);
-
-  // Steps leading up
-  for (let i = 0; i < 5; i++) {
-    const step = createBox(18, 0.3, 2, 0xD3D3D3, [0, 0.15 + i * 0.3, 5 + i * 2], false);
-    step.material.roughness = 0.4;
-    group.add(step);
-  }
-
-  // Scales of Justice (simplified)
-  const justicePost = createCylinder(0.1, 0.1, 2, 8, COLORS.courtroomGold, [0, 3, -5]);
-  justicePost.material.metalness = 0.8;
-  const justiceArm = createBox(1.5, 0.05, 0.05, COLORS.courtroomGold, [0, 4, -5]);
-  justiceArm.material.metalness = 0.8;
-  const pan1 = createCylinder(0.2, 0.15, 0.1, 16, COLORS.courtroomGold, [-0.6, 3.5, -5]);
-  const pan2 = createCylinder(0.2, 0.15, 0.1, 16, COLORS.courtroomGold, [0.6, 3.5, -5]);
-  group.add(justicePost, justiceArm, pan1, pan2);
-
-  // Benches
-  for (let i = 0; i < 3; i++) {
-    const bench = createBox(4, 0.5, 0.8, 0x8B4513, [-6 + i * 6, 0.25, 2]);
-    group.add(bench);
-  }
-
-  // Warm golden light
-  const sunlight = new THREE.DirectionalLight(COLORS.courtroomGold, 1.5);
-  sunlight.position.set(5, 10, 5);
-  sunlight.castShadow = true;
-  sunlight.shadow.mapSize.width = 2048;
-  sunlight.shadow.mapSize.height = 2048;
-  group.add(sunlight);
-
-  const fillLight = new THREE.AmbientLight(0xFFF8DC, 0.4);
-  group.add(fillLight);
 
   return group;
 }
@@ -608,8 +612,8 @@ function createPrisonCell(zOffset) {
 const chapters = [];
 
 chapters.push(createMailroom(0));
-chapters.push(createFloatingMobileDevices(SCENE_DEPTH * 1));
-chapters.push(createCourthouse(SCENE_DEPTH * 2));
+chapters.push(createChucksHouse(SCENE_DEPTH * 1));
+chapters.push(createFloatingMobileDevices(SCENE_DEPTH * 2));
 chapters.push(createDesert(SCENE_DEPTH * 3));
 chapters.push(createSaulOffice(SCENE_DEPTH * 4));
 chapters.push(createPrisonCell(SCENE_DEPTH * 5));
@@ -703,7 +707,7 @@ function animate() {
   camera.position.y = 2 + Math.sin(elapsed * 0.2) * 0.2;
 
   // Gentle drift for floating mobile devices
-  const mobileGroup = chapters[1];
+  const mobileGroup = chapters[2];
   mobileGroup.traverse((child) => {
     if (!child.userData.isFloatingDevice) return;
 
