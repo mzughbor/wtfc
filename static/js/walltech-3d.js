@@ -166,83 +166,94 @@ function createMailroom(zOffset) {
 }
 
 // ============================================
-// CHAPTER 2: CHUCK'S HOUSE
+// CHAPTER 2: MOBILE APPS / UI·UX STUDIO
 // ============================================
 
-function createChucksHouse(zOffset) {
+function createMobileStudio(zOffset) {
   const group = new THREE.Group();
   group.position.z = -zOffset;
 
-  // Dark wooden floor
-  const floor = createBox(20, 0.2, 20, 0x3D2914, [0, -0.1, 0], false);
+  const floor = createBox(18, 0.12, 16, 0xe8ecf1, [0, -0.06, 0], false);
+  floor.material.roughness = 0.35;
   group.add(floor);
 
-  // Walls
-  const backWall = createBox(20, 8, 0.3, 0x2D2D2D, [0, 4, -10], false);
-  const leftWall = createBox(0.3, 8, 20, 0x2D2D2D, [-10, 4, 0], false);
-  group.add(backWall, leftWall);
+  const backWall = createBox(18, 7, 0.2, 0xf4f5f8, [0, 3.5, -8], false);
+  group.add(backWall);
 
-  // Foil-covered windows (the signature look)
-  const window1 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, -4], false);
-  window1.material.metalness = 0.9;
-  window1.material.roughness = 0.3;
-  const window2 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, 3], false);
-  window2.material.metalness = 0.9;
-  window2.material.roughness = 0.3;
-  group.add(window1, window2);
+  const desk = createBox(5, 0.12, 2.4, 0xd9dde5, [0, 0.85, 1.2], false);
+  desk.material.roughness = 0.45;
+  group.add(desk);
 
-  // Lanterns (no electricity)
-  function createLantern(pos) {
-    const lanternGroup = new THREE.Group();
-    const base = createCylinder(0.1, 0.15, 0.3, 8, 0x8B4513, [0, 0, 0]);
-    const glass = createCylinder(0.1, 0.1, 0.4, 8, 0xFFD700, [0, 0.3, 0]);
-    glass.material.transparent = true;
-    glass.material.opacity = 0.7;
-    glass.material.emissive = new THREE.Color(0xFFD700);
-    glass.material.emissiveIntensity = 0.8;
-    lanternGroup.add(base, glass);
-    lanternGroup.position.set(...pos);
+  function createPhone(scale, position, rotationY, tint) {
+    const phoneGroup = new THREE.Group();
+    const width = 0.72 * scale;
+    const height = 1.48 * scale;
+    const depth = 0.08 * scale;
 
-    const lanternLight = new THREE.PointLight(0xFFAA00, 0.8, 8);
-    lanternLight.position.set(0, 0.3, 0);
-    lanternGroup.add(lanternLight);
+    const shell = createBox(width, height, depth, 0x111216, [0, 0, 0]);
+    shell.material.metalness = 0.65;
+    shell.material.roughness = 0.35;
+    phoneGroup.add(shell);
 
-    return lanternGroup;
+    const screen = createBox(width * 0.9, height * 0.9, 0.015, 0x12151f, [0, 0, depth / 2 + 0.002], false);
+    screen.material.emissive = new THREE.Color(tint);
+    screen.material.emissiveIntensity = 0.18;
+    phoneGroup.add(screen);
+
+    const statusBar = createBox(width * 0.78, 0.06 * scale, 0.01, 0x6c7a89, [0, height * 0.38, depth / 2 + 0.01], false);
+    phoneGroup.add(statusBar);
+
+    const heroBlock = createBox(width * 0.78, height * 0.18 * scale, 0.01, COLORS.terracotta, [0, height * 0.2, depth / 2 + 0.01], false);
+    heroBlock.material.emissive = new THREE.Color(COLORS.terracotta);
+    heroBlock.material.emissiveIntensity = 0.35;
+    phoneGroup.add(heroBlock);
+
+    const cardA = createBox(width * 0.36, height * 0.1 * scale, 0.01, 0xffffff, [-width * 0.2, height * 0.02, depth / 2 + 0.01], false);
+    const cardB = createBox(width * 0.36, height * 0.1 * scale, 0.01, COLORS.courtroomGold, [width * 0.2, height * 0.02, depth / 2 + 0.01], false);
+    phoneGroup.add(cardA, cardB);
+
+    const navBar = createBox(width * 0.78, 0.08 * scale, 0.01, 0x1f2a35, [0, -height * 0.38, depth / 2 + 0.01], false);
+    navBar.material.emissive = new THREE.Color(COLORS.neonYellow);
+    navBar.material.emissiveIntensity = 0.12;
+    phoneGroup.add(navBar);
+
+    phoneGroup.position.set(...position);
+    phoneGroup.rotation.y = rotationY;
+    return phoneGroup;
   }
 
-  group.add(createLantern([-3, 1.1, 2]));
-  group.add(createLantern([4, 0.5, -2]));
+  group.add(createPhone(1.35, [0, 1.55, -1.2], 0.08, 0x2d3340));
+  group.add(createPhone(0.92, [2.25, 1.22, 0.35], -0.28, 0x31415a));
+  group.add(createPhone(0.92, [-2.2, 1.18, 0.45], 0.32, 0x49304a));
 
-  // Old couch
-  const couchBase = createBox(3, 0.5, 1.2, 0x4A3728, [0, 0.25, 0]);
-  const couchBack = createBox(3, 1, 0.3, 0x4A3728, [0, 0.75, -0.55]);
-  const couchArm1 = createBox(0.3, 0.7, 1.2, 0x4A3728, [-1.5, 0.35, 0]);
-  const couchArm2 = createBox(0.3, 0.7, 1.2, 0x4A3728, [1.5, 0.35, 0]);
-  group.add(couchBase, couchBack, couchArm1, couchArm2);
+  const wireframePanel = createBox(1.6, 1.05, 0.04, 0xffffff, [-3.4, 2.3, -0.4], false);
+  const panelAccent = createBox(1.4, 0.08, 0.02, COLORS.terracotta, [-3.4, 2.65, -0.34], false);
+  const componentPanel = createBox(1.2, 0.5, 0.03, COLORS.courtroomGold, [3.1, 2.15, -0.6], false);
+  panelAccent.material.emissive = new THREE.Color(COLORS.terracotta);
+  panelAccent.material.emissiveIntensity = 0.25;
+  group.add(wireframePanel, panelAccent, componentPanel);
 
-  // Piano (Chuck's precious)
-  const pianoBody = createBox(2, 1, 0.8, 0x1A1A1A, [5, 0.5, -7]);
-  const pianoTop = createBox(2.1, 0.1, 0.9, 0x1A1A1A, [5, 1.05, -7]);
-  const pianoKeys = createBox(1.8, 0.05, 0.15, 0xFFFFF0, [5, 1, -6.5]);
-  group.add(pianoBody, pianoTop, pianoKeys);
+  const stylus = createCylinder(0.025, 0.025, 0.55, 10, 0x2b2f36, [0.65, 0.97, 1.55]);
+  stylus.rotation.z = Math.PI / 2;
+  group.add(stylus);
 
-  // Space blanket on floor (emergency foil)
-  const blanket = createBox(2, 0.02, 3, COLORS.foil, [-5, 0.02, 2], false);
-  blanket.material.metalness = 1;
-  blanket.material.roughness = 0.2;
-  group.add(blanket);
-
-  // Books scattered
-  for (let i = 0; i < 6; i++) {
-    const book = createBox(0.2, 0.3, 0.4, [0x8B0000, 0x006400, 0x000080][i % 3],
-      [-2 + i * 0.5, 0.15, 3 + Math.random()]);
-    book.rotation.y = Math.random() * Math.PI;
-    group.add(book);
+  const swatchColors = [COLORS.terracotta, COLORS.neonYellow, COLORS.courtroomGold, 0x51a7bf, 0x1a1a2e];
+  for (let i = 0; i < swatchColors.length; i++) {
+    const swatch = createBox(0.16, 0.16, 0.03, swatchColors[i], [-1.2 + i * 0.28, 0.94, 1.78]);
+    group.add(swatch);
   }
 
-  // Very dim ambient
-  const dimLight = new THREE.AmbientLight(0x1a1a1a, 0.3);
-  group.add(dimLight);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
+  keyLight.position.set(4, 7, 5);
+  keyLight.castShadow = true;
+  group.add(keyLight);
+
+  const screenGlow = new THREE.PointLight(0x6fa8ff, 0.9, 10);
+  screenGlow.position.set(0, 2, 2);
+  group.add(screenGlow);
+
+  const fillLight = new THREE.AmbientLight(0xf2f5f8, 0.55);
+  group.add(fillLight);
 
   return group;
 }
@@ -627,7 +638,7 @@ function createPrisonCell(zOffset) {
 const chapters = [];
 
 chapters.push(createMailroom(0));
-chapters.push(createChucksHouse(SCENE_DEPTH * 1));
+chapters.push(createMobileStudio(SCENE_DEPTH * 1));
 chapters.push(createCourthouse(SCENE_DEPTH * 2));
 chapters.push(createDesert(SCENE_DEPTH * 3));
 chapters.push(createSaulOffice(SCENE_DEPTH * 4));
