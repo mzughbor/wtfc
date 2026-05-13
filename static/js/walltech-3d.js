@@ -166,94 +166,64 @@ function createMailroom(zOffset) {
 }
 
 // ============================================
-// CHAPTER 2: MOBILE APPS / UI·UX STUDIO
+// CHAPTER 2: MOBILE APPS — FLOATING DEVICES
 // ============================================
 
-function createMobileStudio(zOffset) {
+function createFloatingMobileDevices(zOffset) {
   const group = new THREE.Group();
   group.position.z = -zOffset;
 
-  const floor = createBox(18, 0.12, 16, 0xe8ecf1, [0, -0.06, 0], false);
-  floor.material.roughness = 0.35;
-  group.add(floor);
+  function createDevice(width, height, depth, position, rotation, screenColor) {
+    const deviceGroup = new THREE.Group();
+    deviceGroup.userData.isFloatingDevice = true;
+    deviceGroup.userData.floatPhase = Math.random() * Math.PI * 2;
+    deviceGroup.userData.floatSpeed = 0.35 + Math.random() * 0.25;
+    deviceGroup.userData.floatRadius = 0.08 + Math.random() * 0.12;
+    deviceGroup.userData.hoverOffset = position[1];
 
-  const backWall = createBox(18, 7, 0.2, 0xf4f5f8, [0, 3.5, -8], false);
-  group.add(backWall);
+    const shell = createBox(width, height, depth, 0x101318, [0, 0, 0]);
+    shell.material.metalness = 0.7;
+    shell.material.roughness = 0.25;
+    deviceGroup.add(shell);
 
-  const desk = createBox(5, 0.12, 2.4, 0xd9dde5, [0, 0.85, 1.2], false);
-  desk.material.roughness = 0.45;
-  group.add(desk);
+    const screen = createBox(width * 0.9, height * 0.9, 0.02, screenColor, [0, 0, depth / 2 + 0.01], false);
+    screen.material.emissive = new THREE.Color(screenColor);
+    screen.material.emissiveIntensity = 0.25;
+    deviceGroup.add(screen);
 
-  function createPhone(scale, position, rotationY, tint) {
-    const phoneGroup = new THREE.Group();
-    const width = 0.72 * scale;
-    const height = 1.48 * scale;
-    const depth = 0.08 * scale;
+    const uiBlock = createBox(width * 0.72, height * 0.2, 0.01, COLORS.terracotta, [0, height * 0.08, depth / 2 + 0.02], false);
+    uiBlock.material.emissive = new THREE.Color(COLORS.terracotta);
+    uiBlock.material.emissiveIntensity = 0.3;
+    deviceGroup.add(uiBlock);
 
-    const shell = createBox(width, height, depth, 0x111216, [0, 0, 0]);
-    shell.material.metalness = 0.65;
-    shell.material.roughness = 0.35;
-    phoneGroup.add(shell);
-
-    const screen = createBox(width * 0.9, height * 0.9, 0.015, 0x12151f, [0, 0, depth / 2 + 0.002], false);
-    screen.material.emissive = new THREE.Color(tint);
-    screen.material.emissiveIntensity = 0.18;
-    phoneGroup.add(screen);
-
-    const statusBar = createBox(width * 0.78, 0.06 * scale, 0.01, 0x6c7a89, [0, height * 0.38, depth / 2 + 0.01], false);
-    phoneGroup.add(statusBar);
-
-    const heroBlock = createBox(width * 0.78, height * 0.18 * scale, 0.01, COLORS.terracotta, [0, height * 0.2, depth / 2 + 0.01], false);
-    heroBlock.material.emissive = new THREE.Color(COLORS.terracotta);
-    heroBlock.material.emissiveIntensity = 0.35;
-    phoneGroup.add(heroBlock);
-
-    const cardA = createBox(width * 0.36, height * 0.1 * scale, 0.01, 0xffffff, [-width * 0.2, height * 0.02, depth / 2 + 0.01], false);
-    const cardB = createBox(width * 0.36, height * 0.1 * scale, 0.01, COLORS.courtroomGold, [width * 0.2, height * 0.02, depth / 2 + 0.01], false);
-    phoneGroup.add(cardA, cardB);
-
-    const navBar = createBox(width * 0.78, 0.08 * scale, 0.01, 0x1f2a35, [0, -height * 0.38, depth / 2 + 0.01], false);
-    navBar.material.emissive = new THREE.Color(COLORS.neonYellow);
-    navBar.material.emissiveIntensity = 0.12;
-    phoneGroup.add(navBar);
-
-    phoneGroup.position.set(...position);
-    phoneGroup.rotation.y = rotationY;
-    return phoneGroup;
+    deviceGroup.position.set(...position);
+    deviceGroup.rotation.set(...rotation);
+    return deviceGroup;
   }
 
-  group.add(createPhone(1.35, [0, 1.55, -1.2], 0.08, 0x2d3340));
-  group.add(createPhone(0.92, [2.25, 1.22, 0.35], -0.28, 0x31415a));
-  group.add(createPhone(0.92, [-2.2, 1.18, 0.45], 0.32, 0x49304a));
+  const devices = [
+    [0.72, 1.48, 0.08, [0, 2.1, 0], [0.12, 0.08, -0.04], 0x22304b],
+    [0.58, 1.18, 0.07, [-1.85, 2.55, -0.75], [-0.18, -0.32, 0.1], 0x2f3f56],
+    [0.58, 1.18, 0.07, [1.9, 2.35, -0.55], [-0.1, 0.36, -0.08], 0x3a2f4a],
+    [0.5, 1.02, 0.07, [-0.55, 3.05, 1.05], [0.22, -0.12, 0.14], 0x1f2f3f],
+    [0.5, 1.02, 0.07, [1.15, 3.2, 0.85], [-0.16, 0.22, -0.12], 0x2a3a4f],
+    [1.42, 0.98, 0.07, [0.15, 1.55, -1.35], [0.08, 0.18, 0.05], 0x2b3648],
+  ];
 
-  const wireframePanel = createBox(1.6, 1.05, 0.04, 0xffffff, [-3.4, 2.3, -0.4], false);
-  const panelAccent = createBox(1.4, 0.08, 0.02, COLORS.terracotta, [-3.4, 2.65, -0.34], false);
-  const componentPanel = createBox(1.2, 0.5, 0.03, COLORS.courtroomGold, [3.1, 2.15, -0.6], false);
-  panelAccent.material.emissive = new THREE.Color(COLORS.terracotta);
-  panelAccent.material.emissiveIntensity = 0.25;
-  group.add(wireframePanel, panelAccent, componentPanel);
+  devices.forEach(([width, height, depth, position, rotation, screenColor]) => {
+    group.add(createDevice(width, height, depth, position, rotation, screenColor));
+  });
 
-  const stylus = createCylinder(0.025, 0.025, 0.55, 10, 0x2b2f36, [0.65, 0.97, 1.55]);
-  stylus.rotation.z = Math.PI / 2;
-  group.add(stylus);
+  const ambient = new THREE.AmbientLight(0xbbc9da, 0.45);
+  group.add(ambient);
 
-  const swatchColors = [COLORS.terracotta, COLORS.neonYellow, COLORS.courtroomGold, 0x51a7bf, 0x1a1a2e];
-  for (let i = 0; i < swatchColors.length; i++) {
-    const swatch = createBox(0.16, 0.16, 0.03, swatchColors[i], [-1.2 + i * 0.28, 0.94, 1.78]);
-    group.add(swatch);
-  }
-
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
-  keyLight.position.set(4, 7, 5);
-  keyLight.castShadow = true;
+  const keyLight = new THREE.DirectionalLight(0xffffff, 0.95);
+  keyLight.position.set(3, 6, 5);
   group.add(keyLight);
 
-  const screenGlow = new THREE.PointLight(0x6fa8ff, 0.9, 10);
-  screenGlow.position.set(0, 2, 2);
+  const screenGlow = new THREE.PointLight(0x6fa8ff, 0.7, 16);
+  screenGlow.position.set(0, 2.5, 2);
   group.add(screenGlow);
-
-  const fillLight = new THREE.AmbientLight(0xf2f5f8, 0.55);
-  group.add(fillLight);
 
   return group;
 }
@@ -638,7 +608,7 @@ function createPrisonCell(zOffset) {
 const chapters = [];
 
 chapters.push(createMailroom(0));
-chapters.push(createMobileStudio(SCENE_DEPTH * 1));
+chapters.push(createFloatingMobileDevices(SCENE_DEPTH * 1));
 chapters.push(createCourthouse(SCENE_DEPTH * 2));
 chapters.push(createDesert(SCENE_DEPTH * 3));
 chapters.push(createSaulOffice(SCENE_DEPTH * 4));
@@ -731,6 +701,21 @@ function animate() {
   // Subtle camera movements
   camera.position.x = Math.sin(elapsed * 0.3) * 0.5;
   camera.position.y = 2 + Math.sin(elapsed * 0.2) * 0.2;
+
+  // Gentle drift for floating mobile devices
+  const mobileGroup = chapters[1];
+  mobileGroup.traverse((child) => {
+    if (!child.userData.isFloatingDevice) return;
+
+    const phase = child.userData.floatPhase;
+    const speed = child.userData.floatSpeed;
+    const radius = child.userData.floatRadius;
+    const baseY = child.userData.hoverOffset;
+
+    child.position.y = baseY + Math.sin(elapsed * speed + phase) * radius;
+    child.rotation.y += delta * 0.15 * speed;
+    child.rotation.z = Math.sin(elapsed * 0.4 + phase) * 0.05;
+  });
 
   // Rotate tumbleweed in desert scene
   const desertGroup = chapters[3];
