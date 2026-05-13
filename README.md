@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FalconCodes / WallTech creative clone
 
-## Getting Started
+Static front-end workspace for a FalconCodes-style marketing home page. The page keeps the original layout, typography, and scroll-driven intro copy, and replaces the former case-study column with an embedded WallTech Three.js scroll experience.
 
-First, run the development server:
+## What is in the repo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- `home.html` — main home page markup, inline scripts, and HTMX hooks from the FalconCodes export
+- `static/` — shared CSS, JavaScript, logos, and the WallTech 3D partial
+- `better-call-sall-liefle-main/` — local Vite + Three.js prototype used as the source for the embedded story (listed in `.gitignore`)
+
+## Project layout
+
+```text
+creative-clone/
+├── home.html
+├── static/
+│   ├── assets/logo/
+│   ├── css/
+│   │   ├── header-styles.css
+│   │   ├── newbb.shared.mzug.min.css
+│   │   ├── apendx.css
+│   │   ├── responsive-images.css
+│   │   └── walltech-3d.css
+│   ├── js/
+│   │   ├── jquery-3.5.1.min.js
+│   │   └── walltech-3d.js
+│   └── partials/
+│       └── walltech-3d-block.html
+└── better-call-sall-liefle-main/
+    ├── story.html
+    ├── main.js
+    └── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Preview the home page
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Serve the repository root over HTTP so `/static/...` paths and the WallTech ES module resolve correctly. Opening `home.html` with `file://` is not supported for the 3D block.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cd /home/mahmoud/falcon/creative-clone
+python3 -m http.server 8765
+```
 
-## Learn More
+Open `http://127.0.0.1:8765/home.html`.
 
-To learn more about Next.js, take a look at the following resources:
+## WallTech 3D block
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The case column (`f-cases-clw w-dyn-list`) renders `#walltech-3d-story`: a sticky viewport, six Falcon service chapters, and scroll-linked camera movement through the scene stack.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Piece | Path |
+| --- | --- |
+| Markup | `home.html`, `static/partials/walltech-3d-block.html` |
+| Styles | `static/css/walltech-3d.css` |
+| Runtime | `static/js/walltech-3d.js` |
 
-## Deploy on Vercel
+On desktop, the sticky viewport uses `top: 0` and `height: 100vh`. On viewports up to 768px wide, it uses `top: 58px` and `height: 94vh` so the canvas clears the mobile header.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The left intro column still reads segment copy from `#intro-scroll-data` and switches text as each `.walltech-chapter` crosses the scroll threshold.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`walltech-3d.js` loads Three.js from jsDelivr (`three@0.160.0`). A network connection is required for the 3D scene unless you vendor that module locally and update the import.
+
+## Standalone 3D prototype
+
+The prototype under `better-call-sall-liefle-main/` is the full-page scroll story experiment that the embedded block was adapted from.
+
+```bash
+cd /home/mahmoud/falcon/creative-clone/better-call-sall-liefle-main
+npm install
+npm run dev
+```
+
+Use `story.html` for the standalone experience and `home.html` for the Falcon-branded embed.
+
+## Notes
+
+- Markup still references HTMX refresh URLs and CSRF tokens from the original Django-backed site. In this static snapshot those requests only work when the matching backend is running.
+- Hero, services, and contact case blocks were removed from the case column in favor of the WallTech experience. Footer contact details below the case column remain in `home.html`.
+- Shared styles and scripts under `static/` are served as static assets; there is no application build step for the home page itself.

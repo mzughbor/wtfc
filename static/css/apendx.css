@@ -1,0 +1,1318 @@
+.falcon-logo-text .char:nth-child(6) {
+    left: 0.15vw;
+}
+
+
+/* Dark logo overlay â€” right panel; rendered as direct child of <body> in base_home.html so
+   position:fixed ties to the viewport (an ancestor with transform, e.g. .logotype-holder, breaks that). */
+#dark-logo-overlay.dark-logo-overlay,
+.dark-logo-overlay {
+    opacity: 0 !important;
+    background-color: #946d0a !important;
+    width: 51.25% !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    /* Must sit above .f-header-holder (z-index:2) and .f-home-hero-stack (z-index:0) or the logo paints on top */
+    z-index: 5 !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease, z-index 0s 0.3s !important;
+}
+
+/* Hide dark-logo-overlay only on screens smaller than 480px */
+@media screen and (max-width: 479px) {
+
+    #dark-logo-overlay.dark-logo-overlay,
+    .dark-logo-overlay {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    #dark-logo-overlay.dark-logo-overlay.scrolled,
+    .dark-logo-overlay.scrolled {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* Keep menu-links-holder visible on mobile (don't hide phone/time) */
+    .menu-links-holder:not(.main).scrolled {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* Show overlay when scrolled past first section - covers "of codes" image */
+#dark-logo-overlay.dark-logo-overlay.scrolled,
+.dark-logo-overlay.scrolled {
+    opacity: 1 !important;
+    z-index: 20 !important;
+    transition: opacity 0.3s ease, z-index 0s 0s !important;
+}
+
+/*
+ * Logo sits under #dark-logo-overlay in paint order: overlay is position:fixed on body with z-index 5+.
+ * z-index on .logotype-holder only stacks inside .f-home-hero-stack / .f-header-holder â€” it does not
+ * compete with the overlay unless the overlayâ€™s z-index is below the header stack (was the bug at 0 vs 2).
+ */
+.logotype-holder,
+.logo-falcon {
+    position: relative !important;
+    z-index: 0 !important;
+}
+
+/* Stacked logo: base + right strip (blurred, whites crushed toward #325879 via multiply) when overlay scrolls */
+.logo-falcon-stack {
+    position: relative !important;
+    display: block !important;
+    line-height: 0 !important;
+    isolation: isolate !important;
+}
+
+.logo-falcon-blur-wrap {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.4s ease, visibility 0.4s ease !important;
+    /* Right 40% of bitmap (inset 60% from left) â€” â€œcodesâ€ side */
+    -webkit-clip-path: inset(0 0 0 50%) !important;
+    clip-path: inset(0 0 0 50%) !important;
+    background-color: #946d0a !important;
+    transform: translateZ(0) !important;
+}
+
+.logo-falcon--blur-right {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
+    /* White/light pixels Ã— #325879 â†’ dissolve into brand blue; dark ink stays readable */
+    mix-blend-mode: multiply !important;
+    filter: blur(15px) contrast(1.2) brightness(0.88) saturate(0.35) !important;
+    -webkit-filter: blur(15px) contrast(1.2) brightness(0.88) saturate(0.35) !important;
+    will-change: filter !important;
+}
+
+body:has(#dark-logo-overlay.dark-logo-overlay.scrolled) .logo-falcon-blur-wrap {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+@media screen and (max-width: 479px) {
+    .logo-falcon-blur-wrap {
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+}
+
+.f-logo-holder {
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 1 !important;
+}
+
+/* Hide menu-links-holder (phone/time) after first scroll */
+.menu-links-holder:not(.main) {
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+.menu-links-holder:not(.main).scrolled {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Language switcher styling in main menu */
+.menu-links-holder.main .language-switcher {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-left: 1.25vw !important;
+    margin-right: 1.25vw !important;
+    position: relative !important;
+}
+
+.menu-links-holder.main .language-btn {
+    cursor: pointer !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    color: #fff !important;
+    font-weight: 400 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    font-family: inherit !important;
+    transition: opacity 0.2s ease !important;
+}
+
+.menu-links-holder.main .language-btn:hover {
+    opacity: 0.7 !important;
+}
+
+.menu-links-holder.main .language-btn svg {
+    transition: transform 0.3s ease !important;
+}
+
+.menu-links-holder.main .language-btn.active svg,
+.menu-links-holder.main .language-switcher:hover .language-btn svg {
+    transform: rotate(180deg) !important;
+}
+
+.menu-links-holder.main .lang-dropdown {
+    display: none;
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    margin-top: 0.5rem !important;
+    background: #161616 !important;
+    border: 1px solid #242424 !important;
+    min-width: 120px !important;
+    z-index: 1000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
+.menu-links-holder.main .lang-dropdown.show {
+    display: block !important;
+}
+
+.menu-links-holder.main .lang-option {
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    background: none !important;
+    border: none !important;
+    color: #fff !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    font-size: 1.1vw !important;
+    transition: background 0.2s ease !important;
+    font-family: inherit !important;
+}
+
+.menu-links-holder.main .lang-option:hover {
+    background: #242424 !important;
+}
+
+.menu-links-holder.main .lang-option:first-child {
+    border-top: none !important;
+}
+
+.menu-links-holder.main .lang-option:not(:first-child) {
+    border-top: 1px solid #242424 !important;
+}
+
+.w--current {
+    pointer-events: none;
+}
+
+.f-after-cases-holder {
+    pointer-events: auto;
+}
+
+.f-cases-holder {
+    pointer-events: none;
+}
+
+.f-case-holder {
+    pointer-events: auto;
+}
+
+.f-video-embed video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.f-services-holder .f-case-services-clw .f-case-ci:last-child .text-comma {
+    display: none;
+}
+
+.con {
+    pointer-events: none;
+    margin-bottom: 4vw;
+    margin-top: calc(100vh - 93.73vh);
+}
+
+.content {
+    pointer-events: auto;
+}
+
+.footer-fill {
+    pointer-events: none;
+}
+
+/* WORK PAGE CSS START */
+.case-header-holder.loaded {
+    position: relative;
+    width: 100%;
+    height: calc(100dvh - 0vw);
+}
+
+.case-header-holder {
+    position: relative;
+    width: 100%;
+    height: calc(100dvh - 7vw);
+}
+
+/* WORK PAGE CSS END */
+/* SPLITTING CSS START */
+.falcon-logo-text span.char {
+    position: relative;
+    opacity: 1;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    transform: translate(0%, 110%) rotateX(0deg) scaleY(1);
+}
+
+.falcon-logo-text.show span.char {
+    animation: falconcode-reveal 2.0s cubic-bezier(.23, 1, .32, 1) forwards;
+    animation-delay: calc(70ms * var(--char-index));
+}
+
+.h1-subpage span.char,
+.f-case-title-text span.char {
+    position: relative;
+    opacity: 1;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 1vw;
+    margin-right: -1vw;
+}
+
+.h1-subpage.show span.char,
+.f-case-title-text.show span.char {
+    animation: revealproducth1 2.5s cubic-bezier(.23, 1, .32, 1) forwards;
+    animation-delay: calc(65ms * var(--char-index));
+}
+
+.case-h1 span.char {
+    position: relative;
+    opacity: 1;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 2vw;
+    margin-right: -2vw;
+}
+
+.case-h1.show span.char {
+    animation: revealproducth1 2.5s cubic-bezier(.23, 1, .32, 1) forwards;
+    animation-delay: calc(65ms * var(--char-index));
+}
+
+@keyframes revealproducth1 {
+    0% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 20%);
+        -ms-transform: translate(0%, 20%);
+        transform: translate(0%, 20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 0%);
+        -ms-transform: translate(0%, 0%);
+        transform: translate(0%, 0%);
+    }
+}
+
+@keyframes falconcode-reveal {
+    0% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        transform: translate(0%, 110%) rotateX(0deg) scaleY(1);
+        -webkit-transform: translate(0%, 110%) rotateX(0deg) scaleY(1);
+        -webkit-transform: translate(0%, 110%) rotateX(0deg) scaleY(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        transform: translate(0%, 0%) rotateX(0deg) scaleY(1);
+        -webkit-transform: translate(0%, 0%) rotateX(0deg) scaleY(1);
+        -ms-transform: translate(0%, 0%) rotateX(0deg) scaleY(1);
+    }
+}
+
+/* SPLITTING CSS END */
+.span-based-star {
+    animation: logofun 18s linear infinite;
+}
+
+path#Fill-11 {
+    /*animation: logofun2 18s linear infinite;*/
+    transform-origin: center center;
+    position: relative;
+    display: inline-block;
+}
+
+.h1-subpage.contact span:nth-child(1) span:nth-child(3) {
+    margin-left: -2.5vw;
+}
+
+/********************** FONT CLAMP START *****************/
+.f-category-holder,
+.small-header,
+.info-header-text,
+.person-title-text,
+.about-p,
+.small-h3,
+.arr-text-2 {
+    font-size: clamp(0.688rem, 0.875vw, 1.5rem);
+}
+
+/********************** FONT CLAMP END *****************/
+.load-overlay {
+    clip-path: inset(100% 0% 0% 0%);
+}
+
+.load-overlay.loading {
+    animation: loadingoverlay 1.25s cubic-bezier(.645, .045, .355, 1) forwards;
+}
+
+@keyframes loadingoverlay {
+    0% {
+        clip-path: inset(100% 0% 0% 0%);
+    }
+
+    45% {
+        clip-path: inset(0% 0% 0% 0%);
+    }
+
+    55% {
+        clip-path: inset(0% 0% 0% 0%);
+    }
+
+    100% {
+        clip-path: inset(0% 0% 100% 0%);
+    }
+}
+
+@keyframes logofun2 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+p.clock span {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+@-webkit-keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+.say-hello-inner {
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 32s linear infinite;
+}
+
+.cursor .o-embed {
+    opacity: 0;
+}
+
+.cursor.loading .o-embed {
+    opacity: 1;
+}
+
+.cursor .cursor-text {
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 6s linear infinite;
+    -moz-animation-play-state: paused;
+    -webkit-animation-play-state: paused;
+    animation-play-state: paused;
+    opacity: 0;
+}
+
+.cursor.case-hover .cursor-text {
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 6s linear infinite;
+    opacity: 1;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/********* HORZIZONTAL SCROLL START ************/
+.con.hori {
+    position: relative;
+    width: 100%;
+    background-color: #fcfafa;
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+.horizontal-scroll {
+    width: 100vh;
+    height: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transform-origin: right top;
+    transform: rotate(-90deg) translate3d(0, -100vh, 0);
+}
+
+.horizontal-scroll>* {
+    transform-origin: left top;
+    transform: rotate(90deg) translate3d(0, calc(-100vh + 0px), 0);
+}
+
+.collection-item {
+    height: calc(100vh - 60px);
+    position: relative;
+}
+
+.f-work-col-list-wrap.work-page {
+    height: calc(100vh - 4.2vw);
+}
+
+.webvid {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 479px) {
+    .webvid {
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .con.hori {
+        position: relative;
+        width: 100%;
+        background-color: #fcfafa;
+        overflow-y: visible;
+        height: auto;
+    }
+
+    .con-inner {
+        overflow-y: visible;
+        height: auto;
+    }
+
+    .horizontal-scroll {
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        overflow-x: visible;
+        transform-origin: right top;
+        transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+
+    .horizontal-scroll>* {
+        transform-origin: left top;
+        transform: rotate(0deg) translate3d(0, calc(0vh + 0px), 0);
+    }
+
+    .case-header-holder {
+        position: relative;
+        width: 100%;
+        height: calc(100svh - 20vw);
+    }
+
+    .case-header-holder.loaded {
+        position: relative;
+        width: 100%;
+        height: calc(100svh - 0vw);
+    }
+}
+
+/********* HORZIZONTAL SCROLL END ************/
+
+.text-foreground {
+    margin: 7px;
+    text-decoration: none;
+}
+
+/* Default: Vertical layout for bigger screens (like original) */
+.f-social {
+    margin-top: 1.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0rem;
+}
+
+/* Social icon blocks as block elements for vertical layout */
+.social-icon-block {
+    display: inline-block;
+    margin: -1rem 0;
+}
+
+.social-icon-block svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* Responsive adjustments for laptop screens (around 1366px width) - switch to horizontal */
+@media screen and (max-width: 1600px) and (min-width: 1200px) {
+    .f-social {
+        margin-top: 2vw;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .social-icon-block {
+        display: inline-block !important;
+        vertical-align: middle;
+    }
+
+    .social-icon-block svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* Smaller laptop screens (1366px and below) - horizontal layout */
+@media screen and (max-width: 1366px) {
+    .f-social {
+        margin-top: 2vw;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+    }
+
+    .social-icon-block {
+        display: inline-block !important;
+        vertical-align: middle;
+    }
+
+    .social-icon-block svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Ensure intro text doesn't overlap with social icons */
+    .f-logo-holder {
+        padding-bottom: 0.5vw !important;
+    }
+
+    .f-intro-text-holder {
+        padding-top: 1vw !important;
+    }
+}
+
+/* Very small screens - horizontal layout */
+@media screen and (max-width: 1024px) {
+    .f-social {
+        margin-top: 0.5vw;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .social-icon-block {
+        display: inline-block !important;
+        vertical-align: middle;
+    }
+
+    .social-icon-block svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Fix sticky positioning - ensure parent containers don't interfere */
+/* CRITICAL: f-sticky-holder must expand based on content, not be constrained to 100% */
+/* The height: 100% in base CSS constrains it - we need it to expand naturally */
+.f-sticky-holder {
+    /* Override height: 100% to allow natural expansion based on f-cases-holder content */
+    height: auto !important;
+    /* Ensure minimum height for sticky to work */
+    min-height: 100vh;
+}
+
+/* Ensure content and con-inner don't have overflow that breaks sticky */
+.content {
+    overflow: visible !important;
+}
+
+.con-inner {
+    overflow: visible !important;
+}
+
+/* Home hero: logo + intro share one fixed column; intro fills only space below the logo */
+.f-home-hero-stack {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    /* Below #dark-logo-overlay (z-index 5 on body); keeps logo/intro under the blue panel when scrolled */
+    z-index: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    pointer-events: none !important;
+}
+
+.f-home-hero-stack>* {
+    pointer-events: auto !important;
+}
+
+.f-logo-holder {
+    position: relative !important;
+    flex: 0 0 auto !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    z-index: 1 !important;
+    margin-top: 3.25vw !important;
+    padding-right: 0rem !important;
+}
+
+.f-intro-text-holder {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 46% !important;
+    z-index: 1 !important;
+    padding-bottom: 1vw !important;
+    padding-left: 1vw !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+.f-intro-text-holder>script[type="application/json"] {
+    display: none !important;
+}
+
+.f-intro-text-holder #intro-text-content {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+.f-intro-text-holder .intro-scroll-inner {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+.f-intro-text-holder p.f-intro-text {
+    flex: 0 1 auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+/* Beat header-styles.css `.f-intro-text { font-size: 2.5vw !important; }` on large screens */
+@media screen and (min-width: 1024px) {
+    .f-home-hero-stack .f-intro-text-holder p.f-intro-text {
+        font-size: clamp(10px, 1.2vw, 28px) !important;
+    }
+}
+
+/* Ensure intro text paragraph is not bold */
+.f-intro-text-holder p.h1,
+.f-intro-text-holder .h1 {
+    font-weight: 400 !important;
+}
+
+/* Default Paragraph Styles - Site-wide */
+p {
+    line-height: 1.8;
+    /* Comfortable reading line height */
+    font-weight: 400;
+    /* Normal weight, not bold */
+    color: inherit;
+    /* Inherit color from parent */
+}
+
+/* Arabic: increase line-height for work item text */
+html[lang="ar"] .work-item-text,
+html[dir="rtl"] .work-item-text {
+    line-height: 1.88 !important;
+}
+
+/* Intro text paragraph â€” base size; home page JS fits text to the flex slot on wide screens */
+.f-intro-text-holder p,
+.f-intro-text-holder p.f-intro-text {
+    font-size: clamp(10px, 1.2vw, 28px);
+    line-height: 1.45;
+    font-weight: 300;
+    margin-bottom: 0;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    word-spacing: normal;
+}
+
+/* Tablet and smaller desktop screens */
+@media screen and (max-width: 1024px) {
+
+    .f-intro-text-holder p,
+    .f-intro-text-holder p.f-intro-text {
+        font-size: calc(3vw - 0.15rem);
+        line-height: 1.6;
+    }
+}
+
+/* Small tablets */
+@media screen and (max-width: 768px) {
+
+    .f-intro-text-holder p,
+    .f-intro-text-holder p.f-intro-text {
+        font-size: calc(2.5vw - 0.15rem);
+        line-height: 1.6;
+    }
+}
+
+/* f-header-holder can remain sticky for structure, but logo and intro text are fixed */
+.f-header-holder {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    /* Lower than menu (925) but above content */
+    /* Ensure the negative margin works correctly - this makes header not take up space */
+    margin-bottom: -100vh !important;
+}
+
+/* CRITICAL: When .con has .fixed class (during Barba transitions), 
+   sticky won't work because fixed creates new stacking context.
+   But this is temporary (500ms), so sticky will work after transition */
+.con.fixed .f-sticky-holder {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+/* Ensure sticky positioning is restored after .fixed class is removed */
+/* Force recalculation of sticky position after Barba.js transitions */
+.con:not(.fixed) .f-header-holder {
+    position: sticky !important;
+    top: 0 !important;
+}
+
+/* Barba transition: extra top offset for logo row */
+.con:not(.fixed) .f-logo-holder,
+.con.fixed .f-logo-holder {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    z-index: 1 !important;
+    margin-top: 7.25vw !important;
+    padding-left: 1vw !important;
+}
+
+.con:not(.fixed) .f-intro-text-holder,
+.con.fixed .f-intro-text-holder {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 46% !important;
+    z-index: 1 !important;
+    padding-bottom: 1vw !important;
+    padding-left: 1vw !important;
+}
+
+/* Ensure body/html can scroll properly after transitions */
+body:not(.no-scroll) {
+    overflow: auto !important;
+}
+
+/* Mobile: Override .case-h1 text-shadow for better mobile readability */
+@media screen and (max-width: 479px) {
+    .case-h1 {
+        text-shadow: 1px 3px 1px #51a7bf !important;
+    }
+}
+
+/* Mobile screens (less than 480px) - disable all sticky/fixed positioning */
+@media screen and (max-width: 479px) {
+
+    .f-home-hero-stack {
+        position: relative !important;
+        height: auto !important;
+        min-height: 0 !important;
+        display: block !important;
+        pointer-events: auto !important;
+    }
+
+    /* Disable fixed positioning for logo holder on mobile */
+    .f-logo-holder,
+    .con:not(.fixed) .f-logo-holder,
+    .con.fixed .f-logo-holder {
+        position: relative !important;
+        top: 0.25vw !important;
+        left: auto !important;
+        width: auto !important;
+        margin-top: 0 !important;
+        padding: 2.5rem 0rem 0rem 1rem !important;
+        flex: none !important;
+    }
+
+    /* Disable fixed positioning for intro text holder on mobile */
+    .f-intro-text-holder,
+    .con:not(.fixed) .f-intro-text-holder,
+    .con.fixed .f-intro-text-holder {
+        position: relative !important;
+        flex: none !important;
+        min-height: 0 !important;
+        bottom: auto !important;
+        left: auto !important;
+        width: 100% !important;
+        padding-bottom: 1rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 1rem !important;
+        font-size: 1.2rem !important;
+        margin-top: 1rem !important;
+        display: block !important;
+        overflow: visible !important;
+    }
+
+    .f-intro-text-holder #intro-text-content,
+    .f-intro-text-holder .intro-scroll-inner {
+        flex: none !important;
+        min-height: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+        justify-content: unset !important;
+    }
+
+    .f-intro-text-holder p.f-intro-text {
+        flex: none !important;
+        max-height: none !important;
+        overflow: visible !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Adjust intro text paragraph for mobile */
+    .f-intro-text-holder p,
+    .f-intro-text-holder p.f-intro-text {
+        font-size: calc(2.75vw + 0.33rem) !important;
+        /* vw-based with calc for mobile */
+        line-height: 1.6 !important;
+        font-weight: 300 !important;
+        /*margin-right: 1rem !important;*/
+        /* Smaller margin on mobile */
+        text-align: left;
+        /* Left align on mobile for better readability */
+    }
+
+    /* Disable sticky positioning for header holder on mobile */
+    .f-header-holder,
+    .con:not(.fixed) .f-header-holder {
+        position: relative !important;
+        top: auto !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Reset sticky holder for mobile */
+    .f-sticky-holder {
+        min-height: auto !important;
+        height: auto !important;
+    }
+
+    /* Adjust social icons for mobile */
+    .f-social {
+        margin-top: 2.5rem !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.75rem !important;
+        justify-content: flex-start !important;
+    }
+
+    .social-icon-block {
+        display: inline-block !important;
+    }
+
+    .social-icon-block svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    /* Keep menu-links-holder visible on mobile (don't hide phone/time) */
+    .menu-links-holder:not(.main).scrolled {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* Hero Slider Styles */
+.hero-slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slider-images {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    pointer-events: none;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Ensure videos in slider are styled correctly */
+.hero-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    padding: 0;
+}
+
+.hero-slider-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.hero-slider-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.hero-slider-prev {
+    left: 1.5vw;
+}
+
+.hero-slider-next {
+    right: 1.5vw;
+}
+
+.hero-slider-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: rgba(255, 255, 255, 0.9);
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .hero-slider-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .hero-slider-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .hero-slider-prev {
+        left: 1rem;
+    }
+
+    .hero-slider-next {
+        right: 1rem;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .hero-slider-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .hero-slider-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Slider Cursor Styles */
+.cursor.slider-hover .follower-text-holder.case {
+    display: none;
+}
+
+.cursor.slider-hover .follower-text-holder.slider {
+    display: flex;
+}
+
+.follower-text-holder.slider {
+    display: none;
+    z-index: 40;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+}
+
+.cursor.slider-hover .follower-text-holder.slider {
+    display: flex;
+}
+
+.cursor.slider-hover .follower-text-holder.slider .cursor-text {
+    white-space: nowrap;
+    will-change: transform;
+    animation: marquee 6s linear infinite;
+    opacity: 1;
+}
+
+/* Services Slider Styles */
+.services-slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.services-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.services-slider-images {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.services-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    pointer-events: none;
+}
+
+.services-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.services-slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    padding: 0;
+}
+
+.services-slider-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.services-slider-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.services-slider-prev {
+    left: 1.5vw;
+}
+
+.services-slider-next {
+    right: 1.5vw;
+}
+
+.services-slider-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: rgba(255, 255, 255, 0.9);
+}
+
+/* Service title under the slider media â€” same row as .f-case-title-text (see #services-slider-title-slot in index) */
+#services-slider-title-slot .service-name-text {
+    display: inline-block;
+}
+
+#services-slider-title-slot {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#services-slider-title-slot.show {
+    opacity: 1;
+}
+
+.service-name-text {
+    display: inline-block;
+}
+
+/*
+.service-name-text::after {
+    content: '|';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+*/
+
+/* Mobile adjustments for services slider */
+@media screen and (max-width: 768px) {
+    .services-slider-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .services-slider-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .services-slider-prev {
+        left: 1rem;
+    }
+
+    .services-slider-next {
+        right: 1rem;
+    }
+
+}
+
+@media screen and (max-width: 479px) {
+
+    .f-category-holder,
+    .small-header,
+    .info-header-text,
+    .person-title-text,
+    .about-p,
+    .small-h3,
+    .arr-text-2 {
+        font-size: 3vw;
+    }
+
+
+    .services-slider-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .services-slider-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .con {
+        margin-top: 14.27vw;
+    }
+
+}

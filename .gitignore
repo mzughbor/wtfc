@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/better-call-sall-liefle-main
 /node_modules
 /.pnp
 .pnp.*

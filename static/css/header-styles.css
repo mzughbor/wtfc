@@ -1,0 +1,3458 @@
+/*lenis -- IMPORTANT*/
+html {
+    scroll-behavior: initial;
+}
+
+/* Arabic: reduce services list link line-height */
+html[lang="ar"] .work-info-text.services a,
+html[dir="rtl"] .work-info-text.services a {
+    line-height: 1.5 !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: auto !important;
+    min-height: 100%;
+}
+
+span.social-icon-block {
+    padding-right: 10px;
+}
+
+/*lenis -- IMPORTANT END*/
+
+.case-header-holder.done {
+    transition: 0s !important;
+}
+
+.f-after-cases-holder-2 {
+    pointer-events: auto;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(2) .f-case-link.show {
+    transition-delay: 0.2s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(3) .f-case-link.show {
+    transition-delay: 0.4s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(4) .f-case-link.show {
+    transition-delay: 0.6s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(5) .f-case-link.show {
+    transition-delay: 0.8s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(6) .f-case-link.show {
+    transition-delay: 1s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(7) .f-case-link.show {
+    transition-delay: 1.2s;
+}
+
+.falcon-logo.frontpage path,
+.falcon-logo.frontpage polygon {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+}
+
+.falcon-logo.frontpage.active path,
+.falcon-logo.frontpage.active polygon {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 0%);
+    -ms-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+    transition: transform 2s cubic-bezier(.23, 1, .32, 1), clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+.falcon-logo.frontpage.active path:nth-child(2) {
+    transition-delay: 0.05s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(3) {
+    transition-delay: 0.1s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(4) {
+    transition-delay: 0.15s;
+}
+
+.falcon-logo.frontpage.active polygon {
+    transition-delay: 0.2s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(5) {
+    transition-delay: 0.25s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(6) {
+    transition-delay: 0.3s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(7) {
+    transition-delay: 0.35s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(8) {
+    transition-delay: 0.4s;
+}
+
+a.w-webflow-badge {
+    display: none !important;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+}
+
+* {
+    text-rendering: optimizeLegibility;
+}
+
+.fixed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 102;
+    overflow: hidden;
+    animation-name: switch;
+    animation-duration: 1.15s;
+}
+
+@keyframes switch {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    51% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+*:focus {
+    outline: none;
+}
+
+.no-touchy {
+    pointer-events: none !important;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+.con::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.con {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.menu {
+    mix-blend-mode: normal;
+    pointer-events: none;
+    transition: background 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Hide menu when scrolled */
+.menu.menu-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Remove menu background when menu-links-holder has scrolled class */
+.menu-link-holder:has(.menu-links-holder.scrolled) .menu,
+.menu-link-holder .menu-links-holder.scrolled~* .menu,
+.menu.no-background {
+    background: transparent !important;
+}
+
+/* Hide menu-links-holder when scrolled */
+.menu-links-holder.scrolled {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-logo {
+    pointer-events: auto;
+}
+
+.menu-link {
+    pointer-events: auto;
+}
+
+/****** CURSOR CSS START ****/
+
+.cursor.cursor-small {
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: difference;
+    clip-path: circle(70.7% at 50% 50%) !important;
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+}
+
+.cursor.cursor-small.loading,
+.cursor.cursor-small.waiting-state {
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor {
+    pointer-events: none;
+    overflow: hidden;
+    clip-path: circle(0.0% at 50% 50%);
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+}
+
+.cursor.loading {
+    /*top: 50% !important;
+left: 50% !important;
+transition: 0.8s cubic-bezier(.23, 1, .32, 1) !important;*/
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor.case-hover {
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor.case-hover .follower-text-holder.case {
+    display: flex;
+}
+
+.cursor.waiting-state {
+    pointer-events: none;
+    /*transition: 0.6s cubic-bezier(.23, 1, .32, 1) !important;*/
+    clip-path: circle(0.0% at 50% 50%) !important;
+}
+
+/****** CURSOR CSS END ****/
+
+.work-header-video-embed video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.ts-image-holder._1 {
+    clip-path: inset(100% 0% 0% 0%);
+}
+
+.ts-image-holder._1.show {
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+.ts-image-holder._2 {
+    clip-path: inset(100% 0% 0% 0%);
+}
+
+.ts-image-holder._2.show {
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+/* Simplified: Images are visible by default, no clip-path animation needed */
+.f-case-link {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* SPLITTING CSS START */
+
+span.word,
+span.char {
+    visibility: visible;
+    backface-visibility: visible;
+}
+
+.splitting .char,
+.splitting .word {
+    position: relative;
+}
+
+.splitting .word,
+.splitting .char {
+    display: inline-block;
+}
+
+.work-h1 span.char {
+    position: relative;
+    opacity: 1;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 1vw;
+    margin-right: -1vw;
+}
+
+.work-h1.show span.char {
+    animation: revealproducth1 2s cubic-bezier(.23, 1, .32, 1) forwards;
+    animation-delay: calc(50ms * var(--char-index));
+}
+
+.worldwide-p span.word {
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 1vw;
+    margin-right: -1vw;
+}
+
+@keyframes revealproducth1 {
+    0% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 20%);
+        -ms-transform: translate(0%, 20%);
+        transform: translate(0%, 20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 0%);
+        -ms-transform: translate(0%, 0%);
+        transform: translate(0%, 0%);
+    }
+}
+
+.small-about-p span.word,
+.toresimon-p span.word,
+.about-p span.word,
+.client-description-rich-text span.word,
+.worldwide-p span.word,
+.small-h2 span.word {
+    clip-path: inset(100% 0% 0% 0%);
+    transition: all 2s cubic-bezier(.23, 1, .32, 1);
+    transition-delay: calc(120ms * var(--line-index));
+}
+
+.small-about-p.show span.word,
+.toresimon-p.show span.word,
+.about-p.show span.word,
+.client-description-rich-text.show span.word,
+.worldwide-p.show span.word,
+.small-h2.show span.word {
+    clip-path: inset(0% 0% 0% 0%) !important;
+    transition: all 2s cubic-bezier(.23, 1, .32, 1) !important;
+    transition-delay: calc(120ms * var(--line-index)) !important;
+}
+
+
+/* SPLITTING CSS END */
+
+/* CUSTOM PLAYER ////////////////////// START */
+
+.video-js .vjs-control:focus {
+    text-shadow: 0em 0em 0em transparent !important;
+}
+
+.video-js {
+    width: 100%;
+    height: auto !important;
+}
+
+.video-js .vjs-slider {
+    margin: 0 0 0 0 !important;
+}
+
+.video-js .vjs-progress-control .vjs-progress-holder {
+    margin: 0 0 !important;
+}
+
+button.vjs-fullscreen-control.vjs-control.vjs-button {
+    display: none;
+    position: relative;
+    bottom: 0rem;
+    left: 0px;
+    width: 4rem;
+    text-align: center;
+    pointer-events: none;
+}
+
+div#casevid {
+    width: 100%;
+    height: 100%;
+    font-family: Inter, sans-serif !important;
+    color: white !important;
+}
+
+.video-js .vjs-tech {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-js .vjs-big-play-button {
+    position: absolute;
+    top: auto;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+    border: 0.06666em solid #fff;
+    border-radius: 0%;
+    transition: all 0.4s;
+    background-color: transparent !important;
+    width: 10vw;
+    height: 10vw;
+    display: none;
+}
+
+.vjs-poster {
+    background-size: cover;
+}
+
+.vjs-control-bar {
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(4, 0, 93, 0) 100%) !important;
+}
+
+button.vjs-picture-in-picture-control.vjs-control.vjs-button {
+    display: none;
+}
+
+.vjs-has-started .vjs-control-bar {
+    font-family: Inter, sans-serif !important;
+    font-size: 0.938rem;
+    width: 100%;
+    position: absolute;
+    left: 0%;
+    bottom: 0rem;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-top: 5rem;
+    height: 10rem;
+}
+
+.vjs-progress-holder.vjs-slider.vjs-slider-horizontal {
+    height: 0.15rem !important;
+    margin-left: 1rem !important;
+    background: rgb(250 250 250 / 20%);
+}
+
+.vjs-volume-bar.vjs-slider-horizontal {
+    width: 3rem;
+    height: 0.15rem;
+}
+
+.vjs-volume-bar.vjs-slider-bar.vjs-slider.vjs-slider-horizontal {
+    top: 0.45rem;
+}
+
+.video-js .vjs-play-progress {
+    background-color: #fff;
+}
+
+.video-js .vjs-load-progress {
+    background: transparent;
+}
+
+.video-js .vjs-load-progress div {
+    background: transparent;
+    display: none;
+}
+
+.video-js .vjs-time-tooltip {
+    background-color: transparent !important;
+    float: right;
+    font-size: 0.938rem !important;
+    pointer-events: none;
+    position: absolute;
+    top: 0rem !important;
+    visibility: hidden;
+    z-index: 20;
+    height: 3rem !important;
+    padding-top: 1rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    border-radius: 0px;
+}
+
+.vjs-time-tooltip {
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-play-progress.vjs-slider-bar .vjs-time-tooltip {
+    background: rgb(255 255 255 / 0%) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1 !important;
+    color: white;
+    font-size: 5vw !important;
+    height: 100vh !important;
+    transform: translate(0%, -50%);
+}
+
+.vjs-play-progress.vjs-slider-bar::before {
+    display: none;
+}
+
+.vjs-mouse-display {
+    width: 0px !important;
+    margin-left: 0px !important;
+    background: rgb(255 255 255 / 0%) !important;
+}
+
+span.vjs-remaining-time-display {
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-play:before,
+.video-js .vjs-play-control .vjs-icon-placeholder:before,
+.video-js .vjs-big-play-button .vjs-icon-placeholder:before {
+    content: "Play";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-pause:before,
+.video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder:before {
+    content: "Pause";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-replay:before,
+.video-js .vjs-play-control.vjs-ended .vjs-icon-placeholder:before {
+    content: "Replay";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important
+}
+
+.video-js .vjs-control {
+    height: 1rem;
+}
+
+button.vjs-play-control.vjs-control.vjs-button {
+    width: 3rem;
+    margin-right: 1rem;
+    background: transparent;
+}
+
+button.vjs-play-control.vjs-control.vjs-button span {
+    top: -1.15rem;
+    position: absolute;
+    -webkit-transform: translate(-50%, 0px);
+    -ms-transform: translate(-50%, 0px);
+    transform: translate(-50%, 0px);
+    width: 100%;
+}
+
+.vjs-volume-panel.vjs-control.vjs-volume-panel-horizontal {
+    background: transparent;
+}
+
+button.vjs-mute-control.vjs-control.vjs-button .vjs-icon-placeholder:before {
+    font-size: 0.938rem;
+    line-height: 1.67;
+    top: -0.25rem;
+}
+
+.video-js .vjs-volume-level {
+    background-color: #fff;
+    height: 100%;
+}
+
+.vjs-slider-horizontal .vjs-volume-level:before {
+    display: none;
+}
+
+.video-js .vjs-slider {
+    background-color: rgb(250 250 250 / 20%);
+}
+
+.video-js .vjs-time-control {
+    position: relative;
+    bottom: 1px;
+    display: none;
+}
+
+.vjs-play-progress.vjs-slider-bar {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+/* CUSTOM PLAYER ////////////////////// END */
+
+a.f-case-link .grid-hover,
+.f-work-col-item .grid-hover {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(.23, 1, .32, 1);
+}
+
+a.f-case-link:hover .grid-hover,
+.f-work-col-item:hover .grid-hover {
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(.23, 1, .32, 1);
+}
+
+video.casevid {
+    visibility: hidden;
+}
+
+video.casevid.show {
+    visibility: visible;
+}
+
+.menu-links-holder.main.frontpage {
+    margin-left: 0vw;
+}
+
+.about-services-list-text.contact-page.loaded {
+    transition: transform 1s cubic-bezier(.23, 1, .32, 1) !important;
+    transform: translate(0) !important;
+}
+
+.about-services-list-text.contact-page.two {
+    transition-delay: 0.15s !important;
+}
+
+.about-services-list-text.contact-page.three {
+    transition-delay: 0.30s !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+
+    .cursor {
+        display: none !important;
+    }
+
+    .cursor-follower {
+        display: none !important;
+    }
+
+}
+
+/* ============================================
+   CONTACT SECTION RESPONSIVE STYLES
+   ============================================ */
+
+/* Height-based adjustments */
+@media (min-height: 480px) and (max-height: 880px) {
+    .need-extra-space {
+        /*margin-top: 5vw;*/
+    }
+
+    .contact-form-container {
+        padding: 1rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 1.2vw 1.5vw !important;
+        font-size: 0.9rem !important;
+    }
+
+    .contact-form {
+        gap: 0vw;
+    }
+}
+
+/* ============================================
+   TABLETS AND SMALL LAPTOPS (768px - 1024px)
+   ============================================ */
+@media screen and (max-width: 1024px) {
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1.5rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.75rem !important;
+        font-size: 1rem !important;
+    }
+
+    .submit-btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 1rem !important;
+    }
+
+    .f-after-cases-holder-2 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding: 2rem 1rem;
+    }
+
+    .contact-info-left {
+        width: 100% !important;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .contact-info-holder {
+        flex: 1;
+        min-width: calc(50% - 0.75rem);
+        padding-left: 0 !important;
+    }
+
+    .contact-info-holder.first {
+        padding-left: 0 !important;
+    }
+
+    .contact-info-right.f {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 0;
+    }
+
+    .small-contact-text {
+        font-size: 1rem !important;
+        line-height: 1.5;
+    }
+}
+
+/* ============================================
+   MOBILE LANDSCAPE (570px - 768px)
+   ============================================ */
+@media screen and (max-width: 768px) {
+    .need-extra-space {
+        /*margin-top: 3vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1.25rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.875rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.625rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .form-textarea {
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        padding: 0.625rem 1.25rem !important;
+        font-size: 0.95rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-info-left {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .contact-info-holder {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .contact-info-right.f {
+        margin-top: 1rem;
+    }
+
+    .small-contact-text {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* ============================================
+   MOBILE PORTRAIT (480px - 570px)
+   ============================================ */
+@media screen and (max-width: 570px) {
+    .need-extra-space {
+        /*margin-top: 2vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .form-textarea {
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .contact-info-left {
+        gap: 1rem;
+    }
+
+    .contact-info-holder {
+        margin-bottom: 0.5rem;
+    }
+
+    .small-contact-text {
+        font-size: 0.875rem !important;
+    }
+}
+
+/* ============================================
+   SMALL MOBILE (< 480px)
+   ============================================ */
+@media screen and (max-width: 479px) {
+    .need-extra-space {
+        /*margin-top: 1vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 0.875rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.625rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.5rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+        font-size: 0.875rem;
+    }
+
+    .form-textarea {
+        min-height: 90px;
+    }
+
+    .submit-btn {
+        padding: 0.5rem 0.875rem !important;
+        font-size: 0.875rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1rem 0.5rem;
+    }
+
+    .contact-info-left {
+        gap: 0.875rem;
+    }
+
+    .contact-info-holder {
+        margin-bottom: 0.5rem;
+        padding-left: 0 !important;
+    }
+
+    .contact-info-holder.first {
+        padding-left: 0 !important;
+    }
+
+    .small-contact-text {
+        font-size: 0.8rem !important;
+        line-height: 1.4;
+    }
+
+    .about-services-h3-holder.contact-page h3 {
+        font-size: 0.875rem !important;
+    }
+
+    .about-services-list-text {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ============================================
+   LANDSCAPE ORIENTATION ADJUSTMENTS
+   ============================================ */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+    .contact-form-container {
+        padding: 1rem !important;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-info-left {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .contact-info-holder {
+        flex: 1;
+        min-width: calc(33.333% - 0.67rem);
+    }
+}
+
+/* ============================================
+   TOUCH DEVICES - ALWAYS SHOW FORM
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    .contact-form-container {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .f-case-holder:hover .contact-form-container {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* ============================================
+   VISION VALUES MISSION SECTION RESPONSIVE
+   ============================================ */
+@media screen and (max-width: 1024px) {
+    .vision-values-mission-box {
+        min-height: auto !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar {
+        height: 6px !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-radius: 3px !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .vision-values-mission-box .f-case-img {
+        display: none !important;
+    }
+
+    .vision-values-mission-box>div {
+        position: relative !important;
+        padding: 2rem 1.5rem !important;
+        background: rgba(22, 22, 22, 0.98) !important;
+        min-height: auto !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        max-width: none !important;
+        width: max-content !important;
+        min-width: 600px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
+        margin-bottom: 0.75rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.85rem, 3vw, 1rem) !important;
+        line-height: 1.6 !important;
+        white-space: normal !important;
+        max-width: 600px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 2rem !important;
+        min-width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div>div:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.75rem 1.25rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 500px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(1rem, 4.5vw, 1.35rem) !important;
+        margin-bottom: 0.625rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem) !important;
+        max-width: 500px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.75rem !important;
+        min-width: max-content !important;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.5rem 1rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 450px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(0.95rem, 5vw, 1.2rem) !important;
+        margin-bottom: 0.5rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.75rem, 4vw, 0.9rem) !important;
+        max-width: 450px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.5rem !important;
+        min-width: max-content !important;
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.25rem 0.875rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 400px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(0.9rem, 5.5vw, 1.1rem) !important;
+        margin-bottom: 0.5rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.7rem, 4.5vw, 0.85rem) !important;
+        max-width: 400px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.25rem !important;
+        min-width: max-content !important;
+    }
+}
+
+/* ============================================
+   EX-VISION VALUES MISSION â€” fluid type, no horizontal scroll
+   (class ex- avoids legacy .vision-values-mission-box min-width/max-content rules)
+   ============================================ */
+.ex-vision-values-mission-box {
+    overflow-x: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.ex-vision-values-mission-box,
+.ex-vision-values-mission-box * {
+    box-sizing: border-box;
+}
+
+.ex-vision-values-mission-box>.vvm-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    background: #ab643f;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    z-index: 2;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.ex-vision-values-mission-box .vvm-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    min-width: 0;
+}
+
+.ex-vision-values-mission-box .vvm-block {
+    position: relative;
+    margin-bottom: clamp(1.25rem, 3vw, 2.5rem);
+    min-width: 0;
+    max-width: 100%;
+}
+
+.ex-vision-values-mission-box .vvm-block--first {
+    margin-top: clamp(0.75rem, 2.5vw, 2rem);
+}
+
+.ex-vision-values-mission-box .vvm-block--last {
+    margin-bottom: clamp(0.75rem, 2.5vw, 2rem);
+}
+
+.ex-vision-values-mission-box .vvm-heading {
+    color: #fff;
+    font-weight: 600;
+    margin: 0 0 clamp(0.5rem, 1.2vw, 1rem) 0;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+.ex-vision-values-mission-box .vvm-text {
+    color: #e0e0e0;
+    line-height: 1.15;
+    font-weight: 300;
+    margin: 0;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+    .ex-vision-values-mission-box .vvm-text {
+        line-height: 1.25;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .ex-vision-values-mission-box .vvm-text {
+        line-height: 1.6;
+    }
+}
+
+/* Large desktop */
+@media screen and (min-width: 1025px) {
+    .ex-vision-values-mission-box .vvm-heading {
+        font-size: clamp(1.35rem, 1.35vw, 1.85rem);
+    }
+
+    .ex-vision-values-mission-box .vvm-text {
+        font-size: clamp(1rem, 1.05vw, 1.125rem);
+    }
+}
+
+/* Tablet / small laptop */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .ex-vision-values-mission-box .vvm-heading {
+        font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+    }
+
+    .ex-vision-values-mission-box .vvm-text {
+        font-size: clamp(0.95rem, 1.85vw, 1.05rem);
+    }
+}
+
+/* Mobile & portrait tablet â€” fluid body per request */
+@media screen and (max-width: 768px) {
+    .ex-vision-values-mission-box .vvm-heading {
+        font-size: clamp(1.05rem, 3.8vw, 1.4rem);
+    }
+
+    .ex-vision-values-mission-box .vvm-text {
+        font-size: max(0.8125rem, calc(2.75vw + 0.33rem));
+    }
+}
+
+@media screen and (max-width: 479px) {
+    .ex-vision-values-mission-box>.vvm-overlay {
+        padding: 1rem 0.875rem;
+    }
+
+    .ex-vision-values-mission-box .vvm-heading {
+        font-size: clamp(1rem, 4.5vw, 1.25rem);
+    }
+
+    .ex-vision-values-mission-box .vvm-text {
+        font-size: max(0.875rem, calc(2.75vw + 0.33rem));
+    }
+}
+
+/* ============================================
+   HAMBURGER MENU STYLES
+   ============================================ */
+
+/* Hamburger Button - Hidden on Desktop */
+.hamburger-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10001 !important;
+    position: relative;
+    margin-left: auto;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Menu Overlay - Hidden by Default */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(22, 22, 22, 0.98);
+    z-index: 10000 !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: none;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.mobile-menu-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0.5rem;
+    max-width: 100%;
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.mobile-menu-logo img,
+.mobile-logo-img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    text-indent: -9999px;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+}
+
+/* Prevent frontpage class from affecting mobile menu logo */
+.mobile-menu-logo .logo,
+.mobile-menu-logo .logo.frontpage,
+.mobile-logo-img,
+.mobile-logo-img.frontpage {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    position: relative !important;
+}
+
+/* Hide alt text if image fails to load - use background image fallback */
+.mobile-menu-logo {
+    display: block;
+    text-decoration: none;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.mobile-menu-logo img[alt]:not([alt=""]) {
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.mobile-menu-close {
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10002;
+    flex-shrink: 0;
+}
+
+.close-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.close-line:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.close-line:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.mobile-menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    flex: 1;
+    margin-bottom: 2rem;
+    padding: 0 1.25rem;
+}
+
+.mobile-menu-link {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link:active {
+    color: #59cbff;
+    padding-left: 1rem;
+}
+
+/* Mobile Edit Page Button - Override link styles for button */
+.mobile-menu-link.mobile-edit-page-btn {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: none;
+}
+
+.mobile-menu-link.mobile-edit-page-btn:hover,
+.mobile-menu-link.mobile-edit-page-btn:active {
+    padding-left: 1rem;
+    /* Keep consistent padding */
+    opacity: 0.9;
+    transform: scale(0.98);
+}
+
+.mobile-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-menu-phone {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.mobile-menu-phone:hover {
+    color: #00bcd4;
+}
+
+.mobile-menu-time {
+    color: #999;
+    font-size: 1rem;
+}
+
+.mobile-menu-lang {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mobile-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.mobile-lang-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mobile-lang-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+    background: #161616;
+    border: 1px solid #242424;
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.mobile-lang-option {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+    border-bottom: 1px solid #242424;
+}
+
+.mobile-lang-option:last-child {
+    border-bottom: none;
+}
+
+.mobile-lang-option:hover {
+    background: #242424;
+}
+
+/* ============================================
+   MOBILE MENU RESPONSIVE
+   ============================================ */
+
+/* Show hamburger menu on tablets and mobile */
+@media screen and (max-width: 1024px) {
+    .hamburger-menu-btn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Hide regular menu links on mobile */
+    .menu-links-holder.main {
+        display: none !important;
+    }
+
+    .menu-links-holder:not(.main) {
+        display: none !important;
+    }
+
+    /* Ensure menu-link-holder can accommodate hamburger button */
+    .menu-link-holder {
+        position: relative;
+    }
+
+    /* Position hamburger button properly - fixed position, not above logo */
+    .hamburger-menu-btn {
+        position: fixed !important;
+        right: 1.5vw !important;
+        top: 2.5vw !important;
+        z-index: 10001 !important;
+        transform: none !important;
+    }
+
+    /* Position close button relative to header, not fixed */
+    .mobile-menu-close {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        z-index: 10002 !important;
+    }
+
+    .mobile-menu-header {
+        padding-top: 0;
+    }
+
+    /* On smaller mobile screens, adjust positioning */
+    @media screen and (max-width: 768px) {
+        .mobile-menu-close {
+            top: 0 !important;
+            right: 0 !important;
+            left: auto !important;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+
+        /* Match home page / Arabic rtl-home: tight top inset on small phones */
+        .mobile-menu-close {
+            top: 1rem !important;
+            right: 1.5rem !important;
+            left: auto !important;
+        }
+
+        .hamburger-menu-btn {
+            right: 1.5rem !important;
+            top: 1rem !important;
+        }
+    }
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+}
+
+
+/*lenis -- IMPORTANT*/
+html {
+    scroll-behavior: initial;
+}
+
+html,
+body {
+    width: 100%;
+    height: auto !important;
+    min-height: 100%;
+}
+
+/*lenis -- IMPORTANT END*/
+
+.case-header-holder.done {
+    transition: 0s !important;
+}
+
+.f-after-cases-holder-2 {
+    pointer-events: auto;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(2) .f-case-link.show {
+    transition-delay: 0.2s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(3) .f-case-link.show {
+    transition-delay: 0.4s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(4) .f-case-link.show {
+    transition-delay: 0.6s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(5) .f-case-link.show {
+    transition-delay: 0.8s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(6) .f-case-link.show {
+    transition-delay: 1s;
+}
+
+.f-work-col-list-wrap.work-page .f-work-col-item.work-page:nth-child(7) .f-case-link.show {
+    transition-delay: 1.2s;
+}
+
+.falcon-logo.frontpage path,
+.falcon-logo.frontpage polygon {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+}
+
+.falcon-logo.frontpage.active path,
+.falcon-logo.frontpage.active polygon {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 0%);
+    -ms-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+    transition: transform 2s cubic-bezier(.23, 1, .32, 1), clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+.falcon-logo.frontpage.active path:nth-child(2) {
+    transition-delay: 0.05s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(3) {
+    transition-delay: 0.1s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(4) {
+    transition-delay: 0.15s;
+}
+
+.falcon-logo.frontpage.active polygon {
+    transition-delay: 0.2s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(5) {
+    transition-delay: 0.25s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(6) {
+    transition-delay: 0.3s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(7) {
+    transition-delay: 0.35s;
+}
+
+.falcon-logo.frontpage.active path:nth-child(8) {
+    transition-delay: 0.4s;
+}
+
+a.w-webflow-badge {
+    display: none !important;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    -ms-font-smoothing: antialiased;
+}
+
+* {
+    text-rendering: optimizeLegibility;
+}
+
+.fixed {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    z-index: 102;
+    overflow: hidden;
+    animation-name: switch;
+    animation-duration: 1.15s;
+}
+
+@keyframes switch {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    51% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+*:focus {
+    outline: none;
+}
+
+.no-touchy {
+    pointer-events: none !important;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+.con::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.con {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.menu {
+    mix-blend-mode: normal;
+    pointer-events: none;
+    transition: background 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    height: 70px;
+}
+
+/* Hide menu when scrolled */
+.menu.menu-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Remove menu background when menu-links-holder has scrolled class */
+.menu-link-holder:has(.menu-links-holder.scrolled) .menu,
+.menu-link-holder .menu-links-holder.scrolled~* .menu,
+.menu.no-background {
+    background: transparent !important;
+}
+
+/* Hide menu-links-holder when scrolled */
+.menu-links-holder.scrolled {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-logo {
+    pointer-events: auto;
+}
+
+.menu-link {
+    pointer-events: auto;
+}
+
+/****** CURSOR CSS START ****/
+
+.cursor.cursor-small {
+    pointer-events: none;
+    overflow: hidden;
+    mix-blend-mode: difference;
+    clip-path: circle(70.7% at 50% 50%) !important;
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+}
+
+.cursor.cursor-small.loading,
+.cursor.cursor-small.waiting-state {
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor {
+    pointer-events: none;
+    overflow: hidden;
+    clip-path: circle(0.0% at 50% 50%);
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+}
+
+.cursor.loading {
+    /*top: 50% !important;
+left: 50% !important;
+transition: 0.8s cubic-bezier(.23, 1, .32, 1) !important;*/
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor.case-hover {
+    transition: clip-path 0.8s cubic-bezier(.23, 1, .32, 1), background-color 0.8s cubic-bezier(.23, 1, .32, 1) !important;
+    clip-path: circle(70.7% at 50% 50%) !important;
+}
+
+.cursor.case-hover .follower-text-holder.case {
+    display: flex;
+}
+
+.cursor.waiting-state {
+    pointer-events: none;
+    /*transition: 0.6s cubic-bezier(.23, 1, .32, 1) !important;*/
+    clip-path: circle(0.0% at 50% 50%) !important;
+}
+
+/****** CURSOR CSS END ****/
+
+.work-header-video-embed video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.ts-image-holder._1 {
+    clip-path: inset(100% 0% 0% 0%);
+}
+
+.ts-image-holder._1.show {
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+.ts-image-holder._2 {
+    clip-path: inset(100% 0% 0% 0%);
+}
+
+.ts-image-holder._2.show {
+    clip-path: inset(0% 0% 0% 0%);
+    transition: clip-path 2s cubic-bezier(.23, 1, .32, 1);
+}
+
+/* Simplified: Images are visible by default, no clip-path animation needed */
+.f-case-link {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* SPLITTING CSS START */
+
+span.word,
+span.char {
+    visibility: visible;
+    backface-visibility: visible;
+}
+
+.splitting .char,
+.splitting .word {
+    position: relative;
+}
+
+.splitting .word,
+.splitting .char {
+    display: inline-block;
+}
+
+.work-h1 span.char {
+    position: relative;
+    opacity: 1;
+    transform-style: preserve-3d;
+    transform-origin: left;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+    -webkit-transform: translate(0%, 20%);
+    -ms-transform: translate(0%, 20%);
+    transform: translate(0%, 20%);
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 1vw;
+    margin-right: -1vw;
+}
+
+.work-h1.show span.char {
+    animation: revealproducth1 2s cubic-bezier(.23, 1, .32, 1) forwards;
+    animation-delay: calc(50ms * var(--char-index));
+}
+
+.worldwide-p span.word {
+    padding-bottom: 1vw;
+    margin-bottom: -1vw;
+    padding-right: 1vw;
+    margin-right: -1vw;
+}
+
+@keyframes revealproducth1 {
+    0% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 20%);
+        -ms-transform: translate(0%, 20%);
+        transform: translate(0%, 20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform-style: preserve-3d;
+        transform-origin: left;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        -webkit-transform: translate(0%, 0%);
+        -ms-transform: translate(0%, 0%);
+        transform: translate(0%, 0%);
+    }
+}
+
+.small-about-p span.word,
+.toresimon-p span.word,
+.about-p span.word,
+.client-description-rich-text span.word,
+.worldwide-p span.word,
+.small-h2 span.word {
+    clip-path: inset(100% 0% 0% 0%);
+    transition: all 2s cubic-bezier(.23, 1, .32, 1);
+    transition-delay: calc(120ms * var(--line-index));
+}
+
+.small-about-p.show span.word,
+.toresimon-p.show span.word,
+.about-p.show span.word,
+.client-description-rich-text.show span.word,
+.worldwide-p.show span.word,
+.small-h2.show span.word {
+    clip-path: inset(0% 0% 0% 0%) !important;
+    transition: all 2s cubic-bezier(.23, 1, .32, 1) !important;
+    transition-delay: calc(120ms * var(--line-index)) !important;
+}
+
+
+/* SPLITTING CSS END */
+
+/* CUSTOM PLAYER ////////////////////// START */
+
+.video-js .vjs-control:focus {
+    text-shadow: 0em 0em 0em transparent !important;
+}
+
+.video-js {
+    width: 100%;
+    height: auto !important;
+}
+
+.video-js .vjs-slider {
+    margin: 0 0 0 0 !important;
+}
+
+.video-js .vjs-progress-control .vjs-progress-holder {
+    margin: 0 0 !important;
+}
+
+button.vjs-fullscreen-control.vjs-control.vjs-button {
+    display: none;
+    position: relative;
+    bottom: 0rem;
+    left: 0px;
+    width: 4rem;
+    text-align: center;
+    pointer-events: none;
+}
+
+div#casevid {
+    width: 100%;
+    height: 100%;
+    font-family: Inter, sans-serif !important;
+    color: white !important;
+}
+
+.video-js .vjs-tech {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-js .vjs-big-play-button {
+    position: absolute;
+    top: auto;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+    border: 0.06666em solid #fff;
+    border-radius: 0%;
+    transition: all 0.4s;
+    background-color: transparent !important;
+    width: 10vw;
+    height: 10vw;
+    display: none;
+}
+
+.vjs-poster {
+    background-size: cover;
+}
+
+.vjs-control-bar {
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(4, 0, 93, 0) 100%) !important;
+}
+
+button.vjs-picture-in-picture-control.vjs-control.vjs-button {
+    display: none;
+}
+
+.vjs-has-started .vjs-control-bar {
+    font-family: Inter, sans-serif !important;
+    font-size: 0.938rem;
+    width: 100%;
+    position: absolute;
+    left: 0%;
+    bottom: 0rem;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-top: 5rem;
+    height: 10rem;
+}
+
+.vjs-progress-holder.vjs-slider.vjs-slider-horizontal {
+    height: 0.15rem !important;
+    margin-left: 1rem !important;
+    background: rgb(250 250 250 / 20%);
+}
+
+.vjs-volume-bar.vjs-slider-horizontal {
+    width: 3rem;
+    height: 0.15rem;
+}
+
+.vjs-volume-bar.vjs-slider-bar.vjs-slider.vjs-slider-horizontal {
+    top: 0.45rem;
+}
+
+.video-js .vjs-play-progress {
+    background-color: #fff;
+}
+
+.video-js .vjs-load-progress {
+    background: transparent;
+}
+
+.video-js .vjs-load-progress div {
+    background: transparent;
+    display: none;
+}
+
+.video-js .vjs-time-tooltip {
+    background-color: transparent !important;
+    float: right;
+    font-size: 0.938rem !important;
+    pointer-events: none;
+    position: absolute;
+    top: 0rem !important;
+    visibility: hidden;
+    z-index: 20;
+    height: 3rem !important;
+    padding-top: 1rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    border-radius: 0px;
+}
+
+.vjs-time-tooltip {
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-play-progress.vjs-slider-bar .vjs-time-tooltip {
+    background: rgb(255 255 255 / 0%) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 1 !important;
+    color: white;
+    font-size: 5vw !important;
+    height: 100vh !important;
+    transform: translate(0%, -50%);
+}
+
+.vjs-play-progress.vjs-slider-bar::before {
+    display: none;
+}
+
+.vjs-mouse-display {
+    width: 0px !important;
+    margin-left: 0px !important;
+    background: rgb(255 255 255 / 0%) !important;
+}
+
+span.vjs-remaining-time-display {
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-play:before,
+.video-js .vjs-play-control .vjs-icon-placeholder:before,
+.video-js .vjs-big-play-button .vjs-icon-placeholder:before {
+    content: "Play";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-pause:before,
+.video-js .vjs-play-control.vjs-playing .vjs-icon-placeholder:before {
+    content: "Pause";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important;
+}
+
+.vjs-icon-replay:before,
+.video-js .vjs-play-control.vjs-ended .vjs-icon-placeholder:before {
+    content: "Replay";
+    font-size: 0.938rem;
+    margin-top: 0.9rem;
+    font-family: Inter, sans-serif !important
+}
+
+.video-js .vjs-control {
+    height: 1rem;
+}
+
+button.vjs-play-control.vjs-control.vjs-button {
+    width: 3rem;
+    margin-right: 1rem;
+    background: transparent;
+}
+
+button.vjs-play-control.vjs-control.vjs-button span {
+    top: -1.15rem;
+    position: absolute;
+    -webkit-transform: translate(-50%, 0px);
+    -ms-transform: translate(-50%, 0px);
+    transform: translate(-50%, 0px);
+    width: 100%;
+}
+
+.vjs-volume-panel.vjs-control.vjs-volume-panel-horizontal {
+    background: transparent;
+}
+
+button.vjs-mute-control.vjs-control.vjs-button .vjs-icon-placeholder:before {
+    font-size: 0.938rem;
+    line-height: 1.67;
+    top: -0.25rem;
+}
+
+.video-js .vjs-volume-level {
+    background-color: #fff;
+    height: 100%;
+}
+
+.vjs-slider-horizontal .vjs-volume-level:before {
+    display: none;
+}
+
+.video-js .vjs-slider {
+    background-color: rgb(250 250 250 / 20%);
+}
+
+.video-js .vjs-time-control {
+    position: relative;
+    bottom: 1px;
+    display: none;
+}
+
+.vjs-play-progress.vjs-slider-bar {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+/* CUSTOM PLAYER ////////////////////// END */
+
+a.f-case-link .grid-hover,
+.f-work-col-item .grid-hover {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(.23, 1, .32, 1);
+}
+
+a.f-case-link:hover .grid-hover,
+.f-work-col-item:hover .grid-hover {
+    opacity: 1;
+    transition: opacity 0.6s cubic-bezier(.23, 1, .32, 1);
+}
+
+video.casevid {
+    visibility: hidden;
+}
+
+video.casevid.show {
+    visibility: visible;
+}
+
+.menu-links-holder.main.frontpage {
+    margin-left: 0vw;
+}
+
+.about-services-list-text.contact-page.loaded {
+    transition: transform 1s cubic-bezier(.23, 1, .32, 1) !important;
+    transform: translate(0) !important;
+}
+
+.about-services-list-text.contact-page.two {
+    transition-delay: 0.15s !important;
+}
+
+.about-services-list-text.contact-page.three {
+    transition-delay: 0.30s !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+
+    .cursor {
+        display: none !important;
+    }
+
+    .cursor-follower {
+        display: none !important;
+    }
+
+}
+
+/* ============================================
+   CONTACT SECTION RESPONSIVE STYLES
+   ============================================ */
+
+/* Height-based adjustments */
+@media (min-height: 480px) and (max-height: 880px) {
+    .need-extra-space {
+        /*margin-top: 5vw;*/
+    }
+
+    .contact-form-container {
+        padding: 1rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 1.2vw 1.5vw !important;
+        font-size: 0.9rem !important;
+    }
+
+    .contact-form {
+        gap: 0vw;
+    }
+}
+
+/* ============================================
+   TABLETS AND SMALL LAPTOPS (768px - 1024px)
+   ============================================ */
+@media screen and (max-width: 1024px) {
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1.5rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.75rem !important;
+        font-size: 1rem !important;
+    }
+
+    .submit-btn {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 1rem !important;
+    }
+
+    .f-after-cases-holder-2 {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding: 2rem 1rem;
+    }
+
+    .contact-info-left {
+        width: 100% !important;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .contact-info-holder {
+        flex: 1;
+        min-width: calc(50% - 0.75rem);
+        padding-left: 0 !important;
+    }
+
+    .contact-info-holder.first {
+        padding-left: 0 !important;
+    }
+
+    .contact-info-right.f {
+        width: 100% !important;
+        display: block !important;
+        margin-bottom: 0;
+    }
+
+    .small-contact-text {
+        font-size: 1rem !important;
+        line-height: 1.5;
+    }
+}
+
+/* ============================================
+   MOBILE LANDSCAPE (570px - 768px)
+   ============================================ */
+@media screen and (max-width: 768px) {
+    .need-extra-space {
+        /*margin-top: 3vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1.25rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.875rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.625rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .form-textarea {
+        min-height: 120px;
+    }
+
+    .submit-btn {
+        padding: 0.625rem 1.25rem !important;
+        font-size: 0.95rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-info-left {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .contact-info-holder {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .contact-info-right.f {
+        margin-top: 1rem;
+    }
+
+    .small-contact-text {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* ============================================
+   MOBILE PORTRAIT (480px - 570px)
+   ============================================ */
+@media screen and (max-width: 570px) {
+    .need-extra-space {
+        /*margin-top: 2vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 1rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.5rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .form-textarea {
+        min-height: 100px;
+    }
+
+    .submit-btn {
+        padding: 0.5rem 1rem !important;
+        font-size: 0.9rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .contact-info-left {
+        gap: 1rem;
+    }
+
+    .contact-info-holder {
+        margin-bottom: 0.5rem;
+    }
+
+    .small-contact-text {
+        font-size: 0.875rem !important;
+    }
+}
+
+/* ============================================
+   SMALL MOBILE (< 480px)
+   ============================================ */
+@media screen and (max-width: 479px) {
+    .need-extra-space {
+        /*margin-top: 1vw;*/
+    }
+
+    /* Hide contact section background image and container on mobile */
+    .need-extra-space .f-case-link {
+        display: none !important;
+    }
+
+    .contact-form-container {
+        padding: 0.875rem !important;
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .contact-form {
+        max-width: 100% !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.625rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.5rem !important;
+        font-size: 0.875rem !important;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+        font-size: 0.875rem;
+    }
+
+    .form-textarea {
+        min-height: 90px;
+    }
+
+    .submit-btn {
+        padding: 0.5rem 0.875rem !important;
+        font-size: 0.875rem !important;
+        width: 100%;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1rem 0.5rem;
+    }
+
+    .contact-info-left {
+        gap: 0.875rem;
+    }
+
+    .contact-info-holder {
+        margin-bottom: 0.5rem;
+        padding-left: 0 !important;
+    }
+
+    .contact-info-holder.first {
+        padding-left: 0 !important;
+    }
+
+    .small-contact-text {
+        font-size: 0.8rem !important;
+        line-height: 1.4;
+    }
+
+    .about-services-h3-holder.contact-page h3 {
+        font-size: 0.875rem !important;
+    }
+
+    .about-services-list-text {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* ============================================
+   LANDSCAPE ORIENTATION ADJUSTMENTS
+   ============================================ */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+    .contact-form-container {
+        padding: 1rem !important;
+    }
+
+    .f-after-cases-holder-2 {
+        padding: 1.5rem 1rem;
+    }
+
+    .contact-info-left {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .contact-info-holder {
+        flex: 1;
+        min-width: calc(33.333% - 0.67rem);
+    }
+}
+
+/* ============================================
+   TOUCH DEVICES - ALWAYS SHOW FORM
+   ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    .contact-form-container {
+        position: relative !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .f-case-holder:hover .contact-form-container {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+
+/* ============================================
+   VISION VALUES MISSION SECTION RESPONSIVE
+   ============================================ */
+@media screen and (max-width: 1024px) {
+    .vision-values-mission-box {
+        min-height: auto !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar {
+        height: 6px !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3) !important;
+        border-radius: 3px !important;
+    }
+
+    .vision-values-mission-box::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .vision-values-mission-box .f-case-img {
+        display: none !important;
+    }
+
+    .vision-values-mission-box>div {
+        position: relative !important;
+        padding: 2rem 1.5rem !important;
+        background: rgba(22, 22, 22, 0.98) !important;
+        min-height: auto !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        max-width: none !important;
+        width: max-content !important;
+        min-width: 600px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(1.1rem, 4vw, 1.5rem) !important;
+        margin-bottom: 0.75rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.85rem, 3vw, 1rem) !important;
+        line-height: 1.6 !important;
+        white-space: normal !important;
+        max-width: 600px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 2rem !important;
+        min-width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div>div:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.75rem 1.25rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 500px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(1rem, 4.5vw, 1.35rem) !important;
+        margin-bottom: 0.625rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.8rem, 3.5vw, 0.95rem) !important;
+        max-width: 500px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.75rem !important;
+        min-width: max-content !important;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.5rem 1rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 450px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(0.95rem, 5vw, 1.2rem) !important;
+        margin-bottom: 0.5rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.75rem, 4vw, 0.9rem) !important;
+        max-width: 450px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.5rem !important;
+        min-width: max-content !important;
+    }
+}
+
+@media screen and (max-width: 479px) {
+
+    .menu {
+        height: 14vw;
+    }
+
+    .vision-values-mission-box {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .vision-values-mission-box>div {
+        padding: 1.25rem 0.875rem !important;
+        min-width: max-content !important;
+        width: max-content !important;
+    }
+
+    .vision-values-mission-box>div>div {
+        min-width: 400px !important;
+    }
+
+    .vision-values-mission-box h3 {
+        font-size: clamp(0.9rem, 5.5vw, 1.1rem) !important;
+        margin-bottom: 0.5rem !important;
+        white-space: nowrap !important;
+    }
+
+    .vision-values-mission-box p {
+        font-size: clamp(0.7rem, 4.5vw, 0.85rem) !important;
+        max-width: 400px !important;
+    }
+
+    .vision-values-mission-box>div>div>div {
+        margin-bottom: 1.25rem !important;
+        min-width: max-content !important;
+    }
+}
+
+/* ============================================
+   HAMBURGER MENU STYLES
+   ============================================ */
+
+/* Hamburger Button - Hidden on Desktop */
+.hamburger-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10001 !important;
+    position: relative;
+    margin-left: auto;
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Menu Overlay - Hidden by Default */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #51a7bf;
+    z-index: 10000 !important;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: none;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.mobile-menu-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.45rem 0.5rem;
+    max-width: 100%;
+}
+
+@media screen and (max-height: 867px) {
+    .mobile-menu-content {
+        padding: .5rem !important;
+    }
+
+    .mobile-logo-img {
+        max-width: 88px !important;
+    }
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.mobile-menu-logo img,
+.mobile-logo-img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    text-indent: -9999px;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+}
+
+/* Prevent frontpage class from affecting mobile menu logo */
+.mobile-menu-logo .logo,
+.mobile-menu-logo .logo.frontpage,
+.mobile-logo-img,
+.mobile-logo-img.frontpage {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    position: relative !important;
+}
+
+/* Hide alt text if image fails to load - use background image fallback */
+.mobile-menu-logo {
+    display: block;
+    text-decoration: none;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.mobile-menu-logo img[alt]:not([alt=""]) {
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+.mobile-menu-close {
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10002;
+    flex-shrink: 0;
+}
+
+.close-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 2px;
+}
+
+.close-line:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.close-line:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.mobile-menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    flex: 1;
+    margin-bottom: 2rem;
+    padding: 0 1.25rem;
+}
+
+.mobile-menu-link {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link:active {
+    color: #59cbff;
+    padding-left: 1rem;
+}
+
+/* Mobile Edit Page Button - Override link styles for button */
+.mobile-menu-link.mobile-edit-page-btn {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: none;
+}
+
+.mobile-menu-link.mobile-edit-page-btn:hover,
+.mobile-menu-link.mobile-edit-page-btn:active {
+    padding-left: 1rem;
+    /* Keep consistent padding */
+    opacity: 0.9;
+    transform: scale(0.98);
+}
+
+.mobile-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-menu-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-menu-phone {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.mobile-menu-phone:hover {
+    color: #00bcd4;
+}
+
+.mobile-menu-time {
+    color: #dbdbdb;
+    font-size: 1rem;
+}
+
+.mobile-menu-lang {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.mobile-lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.mobile-lang-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mobile-lang-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+    background: #161616;
+    border: 1px solid #242424;
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.mobile-lang-option {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+    border-bottom: 1px solid #242424;
+}
+
+.mobile-lang-option:last-child {
+    border-bottom: none;
+}
+
+.mobile-lang-option:hover {
+    background: #242424;
+}
+
+/* ============================================
+   MOBILE MENU RESPONSIVE
+   ============================================ */
+
+/* Show hamburger menu on tablets and mobile */
+@media screen and (max-width: 1024px) {
+    .hamburger-menu-btn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Hide regular menu links on mobile */
+    .menu-links-holder.main {
+        display: none !important;
+    }
+
+    .menu-links-holder:not(.main) {
+        display: none !important;
+    }
+
+    /* Ensure menu-link-holder can accommodate hamburger button */
+    .menu-link-holder {
+        position: relative;
+    }
+
+    /* Position hamburger button properly - fixed position, not above logo */
+    .hamburger-menu-btn {
+        position: fixed !important;
+        right: 1.5vw !important;
+        top: 2.5vw !important;
+        z-index: 10001 !important;
+        transform: none !important;
+    }
+
+    /* Position close button relative to header (same rules as first MOBILE MENU block) */
+    .mobile-menu-close {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        z-index: 10002 !important;
+    }
+
+    .mobile-menu-header {
+        padding-top: 0;
+    }
+}
+
+/* On smaller mobile screens, adjust positioning â€” keep in sync with first block */
+@media screen and (max-width: 768px) {
+    .mobile-menu-close {
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mobile-menu-close {
+        top: 1rem !important;
+        right: 1.5rem !important;
+        left: auto !important;
+    }
+
+    .hamburger-menu-btn {
+        right: 1.5rem !important;
+        top: 1rem !important;
+    }
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+}
+
+/* ============================================
+   REDUCE FONT SIZES FOR DESKTOP/WEB SCREENS
+   Targets: 1024px and above (excludes tablets 768-1023px and mobiles <768px)
+   ============================================ */
+@media screen and (min-width: 1024px) {
+
+    /* Reduce base HTML font size */
+    html {
+        font-size: 115% !important;
+        /* Reduces from default, affects rem/em units */
+    }
+
+    /* Headings - H1 */
+    .h1 {
+        font-size: 4vw !important;
+        /* 15% smaller */
+    }
+
+    /* Headings - H2 */
+    .small-h2,
+    h2 {
+        font-size: 2vw !important;
+    }
+
+    /* Body text and paragraphs */
+    .toresimon-p,
+    .client-description-rich-text {
+        font-size: 1.3vw !important;
+    }
+
+    .case-h1 {
+        font-size: 10vw !important;
+    }
+
+    /* Intro text */
+    .f-intro-text {
+        font-size: 2.5vw !important;
+    }
+
+    /* Case titles */
+    .f-case-title-text {
+        font-size: 2.5vw !important;
+        line-height: 1.6 !important;
+    }
+
+    /* Small headers */
+    .small-header,
+    .small-header._2 {
+        font-size: 1.15vw !important;
+    }
+
+    /* Menu links */
+    .menu-link {
+        font-size: 1.15vw !important;
+    }
+
+    /* Contact form text */
+    .contact-info-label,
+    .contact-info-text,
+    .contact-info-link {
+        font-size: 1.15vw !important;
+    }
+
+    /* Footer text */
+    .footer-link-holder,
+    .footer-main-link {
+        font-size: 1.15vw !important;
+        line-height: 1.25 !important;
+    }
+
+    /* Footer small-h3 color - targets all small-h3 elements in footer */
+    .footer .small-h3 {
+        color: #6b6b6b !important;
+    }
+
+    /* Service list text */
+    .about-services-list-text {
+        font-size: 1.15vw !important;
+    }
+
+    /* Clock and phone text */
+    .clock {
+        font-size: 1.15vw !important;
+    }
+
+    /* Prevent contact info elements from having blinking colons */
+    .contact-info span {
+        animation: none !important;
+        -webkit-animation: none !important;
+        visibility: visible !important;
+    }
+
+    /* Button text */
+    .submit-btn,
+    button {
+        font-size: 1.15vw !important;
+    }
+
+    /* Form inputs */
+    .form-input,
+    .form-textarea {
+        font-size: 1.15vw !important;
+    }
+
+    /* Category holders */
+    .f-category-holder {
+        font-size: 1vw !important;
+    }
+
+    .contact-page-title {
+        font-size: 6.5vw !important;
+    }
+
+    /* Contact page specific */
+    .contact-section-title {
+        font-size: 2.5vw !important;
+    }
+
+    .contact-section-subtitle {
+        font-size: 1.3vw !important;
+    }
+
+}
+
+/* Header Layout Fixes for Other Pages (Not Home) */
+/* This CSS file is only loaded in base_other.html, so it only affects non-home pages */
+/* The home page uses base_home.html which has its own inline CSS */
+
+/* Ensure menu-link-holder uses space-between for proper spacing */
+.menu-link-holder {
+    justify-content: space-between !important;
+}
+
+/* ============================================
+   HOME PAGE MENU POSITIONING
+   ============================================ */
+/* Home page uses base_home.html inline CSS for positioning */
+/* Don't override home page positioning - it has its own styles */
+.menu-links-holder.main.home-page-menu-links,
+body.home-rtl .menu-links-holder.main.home-page-menu-links {
+    /* Home page positioning is handled by base_home.html inline CSS */
+    /* Don't apply other-page styles here */
+}
+
+/* ============================================
+   OTHER PAGES MENU POSITIONING
+   ============================================ */
+/* Other pages (non-home) positioning */
+.menu-links-holder.main.other-page-menu-links,
+body.other-pages .menu-links-holder.main {
+    /* Position at 33% for English to create space for logo and contact info */
+    left: 33% !important;
+    transform: translate(-50%) !important;
+}
+
+/* Arabic RTL Override for OTHER PAGES ONLY */
+/* Arabic uses different positioning for other pages */
+html[dir="rtl"] .menu-links-holder.main.other-page-menu-links,
+html[lang="ar"] .menu-links-holder.main.other-page-menu-links,
+body.other-pages html[dir="rtl"] .menu-links-holder.main,
+body.other-pages html[lang="ar"] .menu-links-holder.main {
+    /* Arabic other pages: use 66% positioning */
+    left: 66% !important;
+    margin: 0 auto !important;
+    transform: translate(-50%) !important;
+}
+
+/* Keep frontpage behavior unchanged (if frontpage class is used) */
+.menu-links-holder.main.frontpage {
+    left: 0% !important;
+    transform: translate(0%) !important;
+}
+
+/* Ensure Arabic menu-link-holder also uses space-between */
+/* Apply to both home and other pages */
+html[dir="rtl"] .menu-link-holder,
+html[lang="ar"] .menu-link-holder {
+    justify-content: space-between !important;
+}
+
+/* Ensure home page menu-link-holder doesn't get affected by other-page rules */
+body.home-rtl .menu-link-holder,
+body:not(.other-pages) .menu-link-holder {
+    /* Home page uses its own positioning from base_home.html */
+}
+
+/* Ensure Edit Page button is always clickable and above other elements */
+.edit-page-menu-link,
+#toggle-edit-mode {
+    z-index: 50001 !important;
+    position: relative !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure address link doesn't cover the edit button */
+.menu-links-holder .menu-link.right[href*="maps.app.goo.gl"] {
+    z-index: 1 !important;
+    position: relative !important;
+}
