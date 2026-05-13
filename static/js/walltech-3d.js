@@ -246,13 +246,43 @@ function createFloatingMobileDevices(zOffset) {
   const group = new THREE.Group();
   group.position.z = -zOffset;
 
+  const skyBackdrop = createBox(44, 20, 0.15, 0x2a3f63, [0, 6.5, -16], false);
+  skyBackdrop.material.roughness = 1;
+  skyBackdrop.material.metalness = 0;
+  group.add(skyBackdrop);
+
+  const horizonBand = createBox(44, 0.14, 30, COLORS.sand, [0, 0.35, -1.5], false);
+  horizonBand.material.roughness = 0.95;
+  group.add(horizonBand);
+
+  const groundGeometry = new THREE.PlaneGeometry(80, 80, 40, 40);
+  const groundVertices = groundGeometry.attributes.position.array;
+  for (let i = 0; i < groundVertices.length; i += 3) {
+    groundVertices[i + 2] = Math.sin(groundVertices[i] * 0.08) * 0.35 + Math.cos(groundVertices[i + 1] * 0.08) * 0.22;
+  }
+  groundGeometry.computeVertexNormals();
+  const ground = new THREE.Mesh(
+    groundGeometry,
+    new THREE.MeshStandardMaterial({
+      color: 0xd8c7a9,
+      roughness: 1,
+      metalness: 0,
+    })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -0.35;
+  ground.receiveShadow = true;
+  group.add(ground);
+
   function createDevice(width, height, depth, position, rotation, screenColor) {
     const deviceGroup = new THREE.Group();
     deviceGroup.userData.isFloatingDevice = true;
     deviceGroup.userData.floatPhase = Math.random() * Math.PI * 2;
-    deviceGroup.userData.floatSpeed = 0.35 + Math.random() * 0.25;
-    deviceGroup.userData.floatRadius = 0.08 + Math.random() * 0.12;
+    deviceGroup.userData.floatSpeed = 0.28 + Math.random() * 0.22;
+    deviceGroup.userData.floatRadius = 0.1 + Math.random() * 0.14;
     deviceGroup.userData.hoverOffset = position[1];
+    deviceGroup.userData.baseX = position[0];
+    deviceGroup.userData.baseZ = position[2];
 
     const shell = createBox(width, height, depth, 0x101318, [0, 0, 0]);
     shell.material.metalness = 0.7;
@@ -275,28 +305,32 @@ function createFloatingMobileDevices(zOffset) {
   }
 
   const devices = [
-    [0.72, 1.48, 0.08, [0, 2.1, 0], [0.12, 0.08, -0.04], 0x22304b],
-    [0.58, 1.18, 0.07, [-1.85, 2.55, -0.75], [-0.18, -0.32, 0.1], 0x2f3f56],
-    [0.58, 1.18, 0.07, [1.9, 2.35, -0.55], [-0.1, 0.36, -0.08], 0x3a2f4a],
-    [0.5, 1.02, 0.07, [-0.55, 3.05, 1.05], [0.22, -0.12, 0.14], 0x1f2f3f],
-    [0.5, 1.02, 0.07, [1.15, 3.2, 0.85], [-0.16, 0.22, -0.12], 0x2a3a4f],
-    [1.42, 0.98, 0.07, [0.15, 1.55, -1.35], [0.08, 0.18, 0.05], 0x2b3648],
+    [0.64, 1.32, 0.08, [-9.5, 1.75, -4.5], [-0.22, 0.48, 0.12], 0x22304b],
+    [0.56, 1.12, 0.07, [8.25, 2.15, -5.5], [0.16, -0.54, -0.08], 0x2f3f56],
+    [0.52, 1.0, 0.07, [-4.75, 2.65, 6.75], [-0.12, 0.72, 0.18], 0x3a2f4a],
+    [0.6, 1.2, 0.07, [10.5, 1.95, 4.0], [0.2, -0.36, -0.14], 0x1f2f3f],
+    [0.48, 0.98, 0.07, [-11.0, 3.05, 2.5], [-0.18, 0.62, 0.1], 0x2a3a4f],
+    [1.35, 0.92, 0.07, [5.75, 1.55, -8.0], [0.1, 0.24, -0.06], 0x2b3648],
   ];
 
   devices.forEach(([width, height, depth, position, rotation, screenColor]) => {
     group.add(createDevice(width, height, depth, position, rotation, screenColor));
   });
 
-  const ambient = new THREE.AmbientLight(0xbbc9da, 0.45);
+  const ambient = new THREE.AmbientLight(0xc8d8ea, 0.42);
   group.add(ambient);
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 0.95);
-  keyLight.position.set(3, 6, 5);
+  const keyLight = new THREE.DirectionalLight(0xfff1d6, 1.05);
+  keyLight.position.set(8, 10, 6);
+  keyLight.castShadow = true;
   group.add(keyLight);
 
-  const screenGlow = new THREE.PointLight(0x6fa8ff, 0.7, 16);
-  screenGlow.position.set(0, 2.5, 2);
+  const screenGlow = new THREE.PointLight(0x6fa8ff, 0.55, 24);
+  screenGlow.position.set(0, 3, 4);
   group.add(screenGlow);
+
+  const warmth = new THREE.HemisphereLight(0x8fd3ff, COLORS.sand, 0.35);
+  group.add(warmth);
 
   return group;
 }
@@ -521,86 +555,73 @@ function createSaulOffice(zOffset) {
 }
 
 // ============================================
-// CHAPTER 6: THE PRISON CELL
+// CHAPTER 6: FLOATING ISLANDS
 // ============================================
 
-function createPrisonCell(zOffset) {
+function createFloatingIslands(zOffset) {
   const group = new THREE.Group();
   group.position.z = -zOffset;
 
-  // Concrete floor
-  const floor = createBox(10, 0.3, 12, COLORS.concrete, [0, -0.15, 0], false);
-  group.add(floor);
+  function createIsland(width, rockHeight, grassHeight, position, rotationY = 0) {
+    const islandGroup = new THREE.Group();
+    islandGroup.userData.isFloatingIsland = true;
+    islandGroup.userData.floatPhase = Math.random() * Math.PI * 2;
+    islandGroup.userData.floatSpeed = 0.25 + Math.random() * 0.2;
+    islandGroup.userData.hoverOffset = position[1];
 
-  // Concrete walls
-  const backWall = createBox(10, 6, 0.5, 0x606060, [0, 3, -6], false);
-  const leftWall = createBox(0.5, 6, 12, 0x606060, [-5, 3, 0], false);
-  const rightWall = createBox(0.5, 6, 12, 0x606060, [5, 3, 0], false);
-  group.add(backWall, leftWall, rightWall);
+    const rock = createCylinder(width, width * 1.35, rockHeight, 8, COLORS.mesaBrown, [0, rockHeight / 2 - grassHeight, 0]);
+    rock.material.roughness = 0.95;
+    islandGroup.add(rock);
 
-  // Prison bars
-  const barMaterial = new THREE.MeshStandardMaterial({
-    color: 0x2F2F2F,
-    metalness: 0.9,
-    roughness: 0.3,
-  });
+    const grass = createCylinder(width * 1.05, width, grassHeight, 12, 0x4c8f4a, [0, grassHeight * 0.35, 0]);
+    grass.material.roughness = 0.9;
+    islandGroup.add(grass);
 
-  for (let i = 0; i < 9; i++) {
-    const bar = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.05, 6, 8),
-      barMaterial
-    );
-    bar.position.set(-4 + i * 1, 3, 5);
-    group.add(bar);
+    islandGroup.position.set(...position);
+    islandGroup.rotation.y = rotationY;
+    return islandGroup;
   }
 
-  // Top bar
-  const topBar = createBox(9, 0.1, 0.1, 0x2F2F2F, [0, 6, 5]);
-  topBar.material.metalness = 0.9;
-  group.add(topBar);
+  function createTree(position) {
+    const tree = new THREE.Group();
+    const trunk = createCylinder(0.12, 0.16, 0.65, 8, 0x6b4d2e, [0, 0.32, 0]);
+    const leaves = new THREE.Mesh(
+      new THREE.SphereGeometry(0.38, 10, 10),
+      new THREE.MeshStandardMaterial({ color: 0x2f7a3a, roughness: 0.85 })
+    );
+    leaves.position.set(0, 0.78, 0);
+    leaves.castShadow = true;
+    tree.add(trunk, leaves);
+    tree.position.set(...position);
+    return tree;
+  }
 
-  // Bottom bar
-  const bottomBar = createBox(9, 0.1, 0.1, 0x2F2F2F, [0, 0.05, 5]);
-  bottomBar.material.metalness = 0.9;
-  group.add(bottomBar);
+  const mainIsland = createIsland(3.2, 2.4, 0.55, [0, 2.2, 0], 0.18);
+  mainIsland.add(createTree([0.65, 0.48, 0.3]));
+  mainIsland.add(createTree([-0.8, 0.48, -0.45]));
+  group.add(mainIsland);
 
-  // Cot/Bed
-  const cotFrame = createBox(2, 0.5, 4, 0x404040, [-3, 0.25, -2]);
-  const cotMattress = createBox(1.8, 0.15, 3.8, 0x4A5568, [-3, 0.55, -2]);
-  group.add(cotFrame, cotMattress);
+  group.add(createIsland(1.6, 1.25, 0.3, [-3.2, 3.1, -1.4], 0.1));
+  group.add(createIsland(1.45, 1.1, 0.28, [2.8, 3.35, 0.95], -0.22));
+  group.add(createIsland(1.15, 0.85, 0.22, [-1.1, 3.75, 1.65], 0.36));
+  group.add(createIsland(1.0, 0.75, 0.18, [1.3, 3.95, -1.05], -0.14));
 
-  // Thin pillow
-  const pillow = createBox(1.5, 0.1, 0.5, 0x718096, [-3, 0.7, -3.5]);
-  group.add(pillow);
+  const mist = createBox(22, 0.08, 22, 0xe7f0ff, [0, 0.9, 1.5], false);
+  mist.material.transparent = true;
+  mist.material.opacity = 0.35;
+  group.add(mist);
 
-  // Toilet (simple)
-  const toiletBase = createCylinder(0.3, 0.35, 0.5, 16, 0xE5E5E5, [3.5, 0.25, -4]);
-  const toiletBowl = createCylinder(0.25, 0.25, 0.3, 16, 0xE5E5E5, [3.5, 0.55, -4]);
-  group.add(toiletBase, toiletBowl);
+  const sun = new THREE.DirectionalLight(0xfff3d0, 1.35);
+  sun.position.set(6, 11, 5);
+  sun.castShadow = true;
+  group.add(sun);
 
-  // Sink
-  const sink = createBox(0.8, 0.1, 0.5, 0xE5E5E5, [3.5, 1.2, -5.5]);
-  group.add(sink);
+  const skyFill = new THREE.HemisphereLight(0x8fd3ff, 0xe8dcc4, 0.6);
+  group.add(skyFill);
 
-  // Small window (high up, barred)
-  const windowFrame = createBox(1.5, 1, 0.1, 0x404040, [0, 5, -5.9], false);
-  group.add(windowFrame);
-
-  // Window light (freedom glimpse)
-  const windowLight = new THREE.SpotLight(0x87CEEB, 2, 15, Math.PI / 6, 0.5);
-  windowLight.position.set(0, 5, -5);
-  windowLight.target.position.set(0, 0, 0);
-  group.add(windowLight);
-  group.add(windowLight.target);
-
-  // Harsh overhead light
-  const cellLight = new THREE.PointLight(0xFFFFE0, 0.8, 15);
-  cellLight.position.set(0, 5.5, 0);
-  group.add(cellLight);
-
-  // Ambient
-  const coldAmbient = new THREE.AmbientLight(0x4A5568, 0.3);
-  group.add(coldAmbient);
+  const warmth = new THREE.PointLight(COLORS.terracotta, 0.6, 20);
+  warmth.position.set(0, 4.5, 2);
+  group.add(warmth);
 
   return group;
 }
@@ -616,7 +637,7 @@ chapters.push(createChucksHouse(SCENE_DEPTH * 1));
 chapters.push(createFloatingMobileDevices(SCENE_DEPTH * 2));
 chapters.push(createDesert(SCENE_DEPTH * 3));
 chapters.push(createSaulOffice(SCENE_DEPTH * 4));
-chapters.push(createPrisonCell(SCENE_DEPTH * 5));
+chapters.push(createFloatingIslands(SCENE_DEPTH * 5));
 
 chapters.forEach(chapter => scene.add(chapter));
 
@@ -717,8 +738,22 @@ function animate() {
     const baseY = child.userData.hoverOffset;
 
     child.position.y = baseY + Math.sin(elapsed * speed + phase) * radius;
+    child.position.x = child.userData.baseX + Math.sin(elapsed * speed * 0.7 + phase) * 0.12;
+    child.position.z = child.userData.baseZ + Math.cos(elapsed * speed * 0.6 + phase) * 0.12;
     child.rotation.y += delta * 0.15 * speed;
     child.rotation.z = Math.sin(elapsed * 0.4 + phase) * 0.05;
+  });
+
+  // Gentle bob for floating islands
+  const islandGroup = chapters[5];
+  islandGroup.traverse((child) => {
+    if (!child.userData.isFloatingIsland) return;
+
+    const phase = child.userData.floatPhase;
+    const speed = child.userData.floatSpeed;
+    const baseY = child.userData.hoverOffset;
+
+    child.position.y = baseY + Math.sin(elapsed * speed + phase) * 0.18;
   });
 
   // Rotate tumbleweed in desert scene
