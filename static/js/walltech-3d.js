@@ -40,10 +40,14 @@ const COLORS = {
   shadow: 0x0D0D0D,
   concrete: 0x808080,
   foil: 0xC0C0C0,
+  footerGrey: 0xdbdbdb,
 };
 
 const CHAPTER_COUNT = 6;
 const SCENE_DEPTH = 100; // Distance between scenes
+const POINTER_SMOOTHING = 0.09;
+const MOUSE_PARALLAX = { x: 0.85, y: 0.32 };
+const MOUSE_LOOK = { yaw: 0.38, pitch: 0.24, distance: 14, height: 1.6 };
 
 // ============================================
 // SCENE SETUP
@@ -55,6 +59,7 @@ scene.fog = new THREE.Fog(COLORS.desertNight, 10, 80);
 
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
 camera.position.set(0, 2, 5);
+const cameraLookTarget = new THREE.Vector3();
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -639,22 +644,26 @@ function createFloatingIslands(zOffset) {
   group.add(createIsland(1.15, 0.85, 0.22, [-1.1, 3.75, 1.65], 0.36));
   group.add(createIsland(1.0, 0.75, 0.18, [1.3, 3.95, -1.05], -0.14));
 
-  const mist = createBox(22, 0.08, 22, 0xe7f0ff, [0, 0.9, 1.5], false);
+  const skyBackdrop = createBox(44, 20, 0.15, COLORS.footerGrey, [0, 6.5, -16], false);
+  skyBackdrop.material.roughness = 1;
+  skyBackdrop.material.metalness = 0;
+  group.add(skyBackdrop);
+
+  const mist = createBox(22, 0.08, 22, COLORS.footerGrey, [0, 0.9, 1.5], false);
   mist.material.transparent = true;
-  mist.material.opacity = 0.35;
+  mist.material.opacity = 0.45;
   group.add(mist);
 
-  const sun = new THREE.DirectionalLight(0xfff3d0, 1.35);
+  const sun = new THREE.DirectionalLight(0xffffff, 0.95);
   sun.position.set(6, 11, 5);
   sun.castShadow = true;
   group.add(sun);
 
-  const skyFill = new THREE.HemisphereLight(0x8fd3ff, 0xe8dcc4, 0.6);
+  const skyFill = new THREE.HemisphereLight(0xf0f0f0, COLORS.footerGrey, 0.62);
   group.add(skyFill);
 
-  const warmth = new THREE.PointLight(COLORS.terracotta, 0.6, 20);
-  warmth.position.set(0, 4.5, 2);
-  group.add(warmth);
+  const fill = new THREE.AmbientLight(0xe2e2e2, 0.35);
+  group.add(fill);
 
   return group;
 }
@@ -681,6 +690,10 @@ loadMobileDeviceModels(chapters[2]);
 
 let currentScroll = 0;
 let targetScroll = 0;
+let targetPointerX = 0;
+let targetPointerY = 0;
+let pointerX = 0;
+let pointerY = 0;
 const progressFill = root.querySelector('.walltech-3d-progress-fill');
 const chapterIndicator = root.querySelector('.walltech-3d-current-chapter');
 const chapterElements = root.querySelectorAll('.walltech-chapter');
@@ -722,6 +735,29 @@ function updateScroll() {
   });
 }
 
+function updatePointerTarget(clientX, clientY) {
+  if (!viewport) return;
+
+  const rect = viewport.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  const x = (clientX - rect.left) / rect.width;
+  const y = (clientY - rect.top) / rect.height;
+  targetPointerX = (x - 0.5) * 2;
+  targetPointerY = (y - 0.5) * 2;
+}
+
+function resetPointerTarget() {
+  targetPointerX = 0;
+  targetPointerY = 0;
+}
+
+window.addEventListener('pointermove', (event) => {
+  updatePointerTarget(event.clientX, event.clientY);
+}, { passive: true });
+
+window.addEventListener('pointerleave', resetPointerTarget);
+
 window.addEventListener('scroll', updateScroll);
 updateScroll();
 
@@ -752,14 +788,35 @@ function animate() {
 
   // Smooth scroll interpolation
   currentScroll += (targetScroll - currentScroll) * 0.05;
+  pointerX += (targetPointerX - pointerX) * POINTER_SMOOTHING;
+  pointerY += (targetPointerY - pointerY) * POINTER_SMOOTHING;
+
+  const activeChapter = Math.min(
+    Math.floor(currentScroll * CHAPTER_COUNT),
+    CHAPTER_COUNT - 1
+  );
+  const footerSceneActive = activeChapter === CHAPTER_COUNT - 1;
+  scene.background.set(footerSceneActive ? COLORS.footerGrey : COLORS.desertNight);
+  if (scene.fog) {
+    scene.fog.color.set(footerSceneActive ? COLORS.footerGrey : COLORS.desertNight);
+  }
 
   // Camera movement through scenes
   const totalDepth = SCENE_DEPTH * (CHAPTER_COUNT - 1);
   camera.position.z = 5 - currentScroll * totalDepth;
 
-  // Subtle camera movements
-  camera.position.x = Math.sin(elapsed * 0.3) * 0.5;
-  camera.position.y = 2 + Math.sin(elapsed * 0.2) * 0.2;
+  // Subtle camera movements with mouse-driven parallax and look
+  const driftX = Math.sin(elapsed * 0.3) * 0.5;
+  const driftY = 2 + Math.sin(elapsed * 0.2) * 0.2;
+  camera.position.x = driftX + pointerX * MOUSE_PARALLAX.x;
+  camera.position.y = driftY + pointerY * MOUSE_PARALLAX.y;
+
+  cameraLookTarget.set(
+    pointerX * MOUSE_LOOK.yaw * MOUSE_LOOK.distance,
+    MOUSE_LOOK.height + pointerY * MOUSE_LOOK.pitch * MOUSE_LOOK.distance * 0.35,
+    camera.position.z - MOUSE_LOOK.distance
+  );
+  camera.lookAt(cameraLookTarget);
 
   // Gentle drift for floating mobile devices
   const mobileGroup = chapters[2];
