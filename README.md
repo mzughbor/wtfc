@@ -76,3 +76,31 @@ Use `story.html` for the standalone experience and `home.html` for the Falcon-br
 - Markup still references HTMX refresh URLs and CSRF tokens from the original Django-backed site. In this static snapshot those requests only work when the matching backend is running.
 - Hero, services, and contact case blocks were removed from the case column in favor of the WallTech experience. Footer contact details below the case column remain in `home.html`.
 - Shared styles and scripts under `static/` are served as static assets; there is no application build step for the home page itself.
+
+## Deploy on Vercel
+
+The repo is a static site: `home.html` at the root, assets under `static/`, and no build step. `vercel.json` rewrites `/` to `/home.html` so the site loads at the project URL without renaming the main file.
+
+### Dashboard
+
+1. Import the Git repository in [Vercel](https://vercel.com/new).
+2. Set **Framework Preset** to **Other**.
+3. Leave **Root Directory** as `.`.
+4. Leave **Build Command** and **Output Directory** empty.
+5. Deploy.
+
+### CLI
+
+```bash
+cd /home/mahmoud/falcon/creative-clone
+npx vercel
+```
+
+Use `npx vercel --prod` for production.
+
+### After deploy
+
+- Open the deployment URL at `/` or `/home.html`.
+- Confirm `/static/css/walltech-3d.css` and `/static/js/walltech-3d.js` return `200`.
+- HTMX refresh URLs under `/en/htmx/...` still need the original Django backend; they are not part of this static deploy.
+- WallTech still loads Three.js from jsDelivr, so the browser needs outbound HTTPS access to that CDN.
