@@ -104,3 +104,9 @@ Use `npx vercel --prod` for production.
 - Confirm `/static/css/walltech-3d.css` and `/static/js/walltech-3d.js` return `200`.
 - HTMX refresh URLs under `/en/htmx/...` still need the original Django backend; they are not part of this static deploy.
 - WallTech still loads Three.js from jsDelivr, so the browser needs outbound HTTPS access to that CDN.
+
+
+# Color Pakette Test...
+#f0bf4c
+#4cf0bf
+#bf4cf0

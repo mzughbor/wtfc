@@ -64,61 +64,49 @@
  * compete with the overlay unless the overlayâ€™s z-index is below the header stack (was the bug at 0 vs 2).
  */
 .logotype-holder,
-.logo-falcon {
+.home-hero-logo {
     position: relative !important;
     z-index: 0 !important;
 }
 
-/* Stacked logo: base + right strip (blurred, whites crushed toward #325879 via multiply) when overlay scrolls */
-.logo-falcon-stack {
-    position: relative !important;
+.f-logo-holder .logotype-holder {
+    width: 50% !important;
+    max-width: 50vw !important;
+    box-sizing: border-box !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.home-hero-logo {
     display: block !important;
-    line-height: 0 !important;
-    isolation: isolate !important;
-}
-
-.logo-falcon-blur-wrap {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
     width: 100% !important;
-    height: 100% !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: opacity 0.4s ease, visibility 0.4s ease !important;
-    /* Right 40% of bitmap (inset 60% from left) â€” â€œcodesâ€ side */
-    -webkit-clip-path: inset(0 0 0 50%) !important;
-    clip-path: inset(0 0 0 50%) !important;
-    background-color: #946d0a !important;
-    transform: translateZ(0) !important;
-}
-
-.logo-falcon--blur-right {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     object-fit: contain !important;
-    pointer-events: none !important;
-    /* White/light pixels Ã— #325879 â†’ dissolve into brand blue; dark ink stays readable */
-    mix-blend-mode: multiply !important;
-    filter: blur(15px) contrast(1.2) brightness(0.88) saturate(0.35) !important;
-    -webkit-filter: blur(15px) contrast(1.2) brightness(0.88) saturate(0.35) !important;
-    will-change: filter !important;
+    object-position: left center !important;
+    padding-right: 4vw !important;
+}
+
+.logo-falcon-stack,
+.logo-falcon-blur-wrap,
+.logo-falcon--blur-right {
+    display: none !important;
 }
 
 body:has(#dark-logo-overlay.dark-logo-overlay.scrolled) .logo-falcon-blur-wrap {
-    opacity: 1 !important;
-    visibility: visible !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 @media screen and (max-width: 479px) {
-    .logo-falcon-blur-wrap {
-        opacity: 0 !important;
-        visibility: hidden !important;
+    .f-logo-holder .logotype-holder {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .home-hero-logo {
+        padding-right: 4vw;
     }
 }
 
@@ -139,6 +127,37 @@ body:has(#dark-logo-overlay.dark-logo-overlay.scrolled) .logo-falcon-blur-wrap {
     pointer-events: none !important;
 }
 
+.menu {
+    background: #4cf0bf !important;
+    transition: background 0.3s ease, opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+.menu:not(.no-background) .menu-link,
+.menu:not(.no-background) .menu-link.w--current,
+.menu:not(.no-background) .menu-links-holder .phone,
+.menu:not(.no-background) .menu-links-holder .contact-info,
+.menu:not(.no-background) .menu-links-holder .clock,
+.menu:not(.no-background) .menu-links-holder .clock span {
+    color: #000 !important;
+}
+
+.menu.no-background .menu-link,
+.menu.no-background .menu-link.w--current,
+.menu.no-background .menu-links-holder .phone,
+.menu.no-background .menu-links-holder .contact-info,
+.menu.no-background .menu-links-holder .clock,
+.menu.no-background .menu-links-holder .clock span {
+    color: #fff !important;
+}
+
+.menu:not(.no-background) .hamburger-line {
+    background-color: #000 !important;
+}
+
+.menu.no-background .hamburger-line {
+    background-color: #fff !important;
+}
+
 /* Language switcher styling in main menu */
 .menu-links-holder.main .language-switcher {
     display: flex !important;
@@ -154,13 +173,17 @@ body:has(#dark-logo-overlay.dark-logo-overlay.scrolled) .logo-falcon-blur-wrap {
     background: none !important;
     border: none !important;
     padding: 0 !important;
-    color: #fff !important;
     font-weight: 400 !important;
+    color: #000 !important;
     display: flex !important;
     align-items: center !important;
     gap: 0.5rem !important;
     font-family: inherit !important;
-    transition: opacity 0.2s ease !important;
+    transition: color 0.3s ease, opacity 0.2s ease !important;
+}
+
+.menu.no-background .menu-links-holder.main .language-btn {
+    color: #fff !important;
 }
 
 .menu-links-holder.main .language-btn:hover {
@@ -607,7 +630,7 @@ p.clock span {
 /* Responsive adjustments for laptop screens (around 1366px width) - switch to horizontal */
 @media screen and (max-width: 1600px) and (min-width: 1200px) {
     .f-social {
-        margin-top: 2vw;
+        margin-top: 3vw;
         flex-direction: row;
         align-items: center;
         gap: 0.75rem;
@@ -628,7 +651,7 @@ p.clock span {
 /* Smaller laptop screens (1366px and below) - horizontal layout */
 @media screen and (max-width: 1366px) {
     .f-social {
-        margin-top: 2vw;
+        margin-top: 4vw;
         flex-direction: row;
         align-items: center;
         gap: 0.6rem;
@@ -658,7 +681,6 @@ p.clock span {
 /* Very small screens - horizontal layout */
 @media screen and (max-width: 1024px) {
     .f-social {
-        margin-top: 0.5vw;
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
@@ -748,6 +770,7 @@ p.clock span {
 
 .f-intro-text-holder #intro-text-content {
     flex: 1 1 0 !important;
+    color: #fcfafa;
     min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;

@@ -3306,6 +3306,8 @@ body.menu-open {
     .small-header,
     .small-header._2 {
         font-size: 1.15vw !important;
+        margin-top: 2vw;
+        margin-bottom: 2vw;
     }
 
     /* Menu links */

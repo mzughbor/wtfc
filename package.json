@@ -2,5 +2,13 @@
   "name": "falcon-creative-clone",
   "private": true,
   "version": "1.0.0",
-  "description": "Static Falcon of Codes clone for WallTech marketing home page"
+  "description": "Static Falcon of Codes clone for WallTech marketing home page",
+  "scripts": {
+    "dev": "serve . --listen 3000",
+    "preview": "serve . --listen 3000",
+    "start": "serve . --listen 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
 }

@@ -4,6 +4,15 @@
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+import { RectAreaLightUniformsLib } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lights/RectAreaLightUniformsLib.js';
+import { createWaterChapter, initWaterChapter, WATER_CAMERA_DISTANCE } from './walltech-gpgpu-water.js';
+import {
+  createPostprocessingChapter,
+  initPostprocessingComposer,
+  POST_CHAPTER_FOG,
+} from './walltech-postprocessing.js';
+
+RectAreaLightUniformsLib.init();
 
 const MOBILE_MODEL_PATH = '/static/models/bluemi_12_5g_lowpoly_game_asset.glb';
 const MOBILE_DEVICE_LAYOUT = [
@@ -41,13 +50,21 @@ const COLORS = {
   concrete: 0x808080,
   foil: 0xC0C0C0,
   footerGrey: 0xdbdbdb,
+  wallTechBackdrop: 0xf0bf4c,
 };
 
 const CHAPTER_COUNT = 6;
 const SCENE_DEPTH = 100; // Distance between scenes
-const POINTER_SMOOTHING = 0.09;
-const MOUSE_PARALLAX = { x: 0.85, y: 0.32 };
-const MOUSE_LOOK = { yaw: 0.38, pitch: 0.24, distance: 14, height: 1.6 };
+const POINTER_SMOOTHING = 0.07;
+const MOUSE_PARALLAX = { x: 0.22, y: 0.08 };
+const MOUSE_LOOK = { yaw: 0.1, pitch: 0.06, distance: 14, height: 1.6 };
+const WATER_CHAPTER_INDEX = 1;
+const POST_CHAPTER_INDEX = CHAPTER_COUNT - 1;
+const defaultCameraPosition = new THREE.Vector3();
+const waterCameraPosition = new THREE.Vector3();
+const defaultLookTarget = new THREE.Vector3();
+const waterLookTarget = new THREE.Vector3();
+const blendedLookTarget = new THREE.Vector3();
 
 // ============================================
 // SCENE SETUP
@@ -59,7 +76,6 @@ scene.fog = new THREE.Fog(COLORS.desertNight, 10, 80);
 
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
 camera.position.set(0, 2, 5);
-const cameraLookTarget = new THREE.Vector3();
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -176,148 +192,191 @@ function loadMobileDeviceModels(group) {
   );
 }
 
-// ============================================
-// CHAPTER 1: THE MAILROOM
-// ============================================
+function createProceduralBrickMaps() {
+  const width = 512;
+  const height = 512;
+  const diffuseCanvas = document.createElement('canvas');
+  const bumpCanvas = document.createElement('canvas');
+  diffuseCanvas.width = width;
+  diffuseCanvas.height = height;
+  bumpCanvas.width = width;
+  bumpCanvas.height = height;
 
-function createMailroom(zOffset) {
-  const group = new THREE.Group();
-  group.position.z = -zOffset;
+  const diffuseCtx = diffuseCanvas.getContext('2d');
+  const bumpCtx = bumpCanvas.getContext('2d');
+  const brickW = 118;
+  const brickH = 52;
+  const mortar = 5;
+  const palette = ['#7c4f3d', '#8a5844', '#6f4435', '#945840'];
 
-  // Floor
-  const floor = createBox(20, 0.2, 20, 0x404040, [0, -0.1, 0], false);
-  group.add(floor);
+  diffuseCtx.fillStyle = '#2f2520';
+  diffuseCtx.fillRect(0, 0, width, height);
+  bumpCtx.fillStyle = '#6a6a6a';
+  bumpCtx.fillRect(0, 0, width, height);
 
-  // Walls
-  const backWall = createBox(20, 8, 0.3, 0x505050, [0, 4, -10], false);
-  group.add(backWall);
-
-  // Mail cart
-  const cart = createBox(1.5, 0.8, 1, 0x666666, [-2, 0.4, 0]);
-  group.add(cart);
-
-  // Mailboxes (grid of boxes)
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 6; j++) {
-      const mailbox = createBox(0.5, 0.4, 0.3, 0x8B7355, [-8 + i * 0.6, 1 + j * 0.5, -9]);
-      group.add(mailbox);
+  for (let row = 0, y = 0; y < height; row += 1, y += brickH + mortar) {
+    const offset = (row % 2) * (brickW / 2);
+    for (let x = -offset; x < width; x += brickW + mortar) {
+      const tone = palette[(row + Math.floor((x + offset) / (brickW + mortar))) % palette.length];
+      diffuseCtx.fillStyle = tone;
+      diffuseCtx.fillRect(x, y, brickW, brickH);
+      bumpCtx.fillStyle = '#a88578';
+      bumpCtx.fillRect(x, y, brickW, brickH);
     }
   }
 
-  // Filing cabinets
-  for (let i = 0; i < 3; i++) {
-    const cabinet = createBox(0.8, 2.5, 0.6, 0x505050, [6, 1.25, -8 + i * 2]);
-    group.add(cabinet);
-  }
+  const diffuse = new THREE.CanvasTexture(diffuseCanvas);
+  diffuse.wrapS = THREE.RepeatWrapping;
+  diffuse.wrapT = THREE.RepeatWrapping;
+  diffuse.colorSpace = THREE.SRGBColorSpace;
 
-  // Stack of mail boxes
-  for (let i = 0; i < 5; i++) {
-    const box = createBox(0.6, 0.4, 0.6, 0xD2B48C, [2 + (i % 2) * 0.3, 0.2 + i * 0.45, 2]);
-    box.rotation.y = Math.random() * 0.2;
-    group.add(box);
-  }
+  const bump = new THREE.CanvasTexture(bumpCanvas);
+  bump.wrapS = THREE.RepeatWrapping;
+  bump.wrapT = THREE.RepeatWrapping;
 
-  // Fluorescent lights (the soul-crushing kind)
-  const lightFixture1 = createBox(4, 0.1, 0.5, 0xffffff, [0, 6, 0], false);
-  lightFixture1.material.emissive = new THREE.Color(COLORS.fluorescent);
-  lightFixture1.material.emissiveIntensity = 0.5;
-  group.add(lightFixture1);
+  return { diffuse, bump };
+}
 
-  const lightFixture2 = createBox(4, 0.1, 0.5, 0xffffff, [-4, 6, -4], false);
-  lightFixture2.material.emissive = new THREE.Color(COLORS.fluorescent);
-  lightFixture2.material.emissiveIntensity = 0.5;
-  group.add(lightFixture2);
+function createBrickWallMaterial(brickMaps, repeatX, repeatY) {
+  const map = brickMaps.diffuse.clone();
+  const bumpMap = brickMaps.bump.clone();
+  map.repeat.set(repeatX, repeatY);
+  bumpMap.repeat.set(repeatX, repeatY);
 
-  // Overhead light
-  const light = new THREE.PointLight(COLORS.fluorescent, 2, 20);
-  light.position.set(0, 5, 0);
-  light.castShadow = true;
-  group.add(light);
+  return new THREE.MeshStandardMaterial({
+    map,
+    bumpMap,
+    bumpScale: 0.08,
+    roughness: 0.88,
+    metalness: 0.04,
+  });
+}
 
-  // Desk
-  const desk = createBox(2, 0.1, 1, 0x8B4513, [0, 1, 3]);
-  group.add(desk);
-  const deskLeg1 = createBox(0.1, 1, 0.1, 0x8B4513, [-0.9, 0.5, 3.4]);
-  const deskLeg2 = createBox(0.1, 1, 0.1, 0x8B4513, [0.9, 0.5, 3.4]);
-  const deskLeg3 = createBox(0.1, 1, 0.1, 0x8B4513, [-0.9, 0.5, 2.6]);
-  const deskLeg4 = createBox(0.1, 1, 0.1, 0x8B4513, [0.9, 0.5, 2.6]);
-  group.add(deskLeg1, deskLeg2, deskLeg3, deskLeg4);
+function createWallTechSignTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
 
-  return group;
+  ctx.fillStyle = '#1f1712';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.font = '700 118px Georgia, "Times New Roman", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#f0d7b2';
+  ctx.fillText('Wall Tech', canvas.width / 2, canvas.height / 2 + 6);
+
+  ctx.strokeStyle = 'rgba(255, 232, 196, 0.35)';
+  ctx.lineWidth = 3;
+  ctx.strokeText('Wall Tech', canvas.width / 2, canvas.height / 2 + 6);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function createBrickWall(width, height, material, position, rotationY = 0) {
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
+  wall.position.set(...position);
+  wall.rotation.y = rotationY;
+  wall.receiveShadow = true;
+  return wall;
+}
+
+function createRectAreaLight(color, intensity, width, height, position, target) {
+  const light = new THREE.RectAreaLight(color, intensity, width, height);
+  light.position.set(...position);
+  light.lookAt(target[0], target[1], target[2]);
+  return light;
 }
 
 // ============================================
-// CHAPTER 2: CHUCK'S HOUSE
+// CHAPTER 1: WALL TECH SHOWROOM
 // ============================================
 
-function createChucksHouse(zOffset) {
+function createWallTechRoom(zOffset) {
   const group = new THREE.Group();
   group.position.z = -zOffset;
 
-  const floor = createBox(20, 0.2, 20, 0x3D2914, [0, -0.1, 0], false);
+  const brickMaps = createProceduralBrickMaps();
+  const roomWidth = 20;
+  const roomDepth = 20;
+  const wallHeight = 8;
+  const halfWidth = roomWidth / 2;
+  const halfDepth = roomDepth / 2;
+
+  const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(roomWidth, roomDepth, 1, 1),
+    new THREE.MeshStandardMaterial({
+      color: 0x2a2622,
+      roughness: 0.42,
+      metalness: 0.28,
+    })
+  );
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = 0;
+  floor.receiveShadow = true;
   group.add(floor);
 
-  const backWall = createBox(20, 8, 0.3, 0x2D2D2D, [0, 4, -10], false);
-  const leftWall = createBox(0.3, 8, 20, 0x2D2D2D, [-10, 4, 0], false);
-  group.add(backWall, leftWall);
+  const ceiling = new THREE.Mesh(
+    new THREE.PlaneGeometry(roomWidth, roomDepth),
+    new THREE.MeshStandardMaterial({
+      color: 0x1a1816,
+      roughness: 0.95,
+      metalness: 0.02,
+    })
+  );
+  ceiling.rotation.x = Math.PI / 2;
+  ceiling.position.y = wallHeight;
+  group.add(ceiling);
 
-  const window1 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, -4], false);
-  window1.material.metalness = 0.9;
-  window1.material.roughness = 0.3;
-  const window2 = createBox(3, 2.5, 0.1, COLORS.foil, [-9.7, 3.5, 3], false);
-  window2.material.metalness = 0.9;
-  window2.material.roughness = 0.3;
-  group.add(window1, window2);
+  group.add(createBrickWall(halfWidth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [-halfWidth / 2, wallHeight / 2, -halfDepth]));
+  group.add(createBrickWall(halfWidth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [halfWidth / 2, wallHeight / 2, -halfDepth]));
+  group.add(createBrickWall(halfWidth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [-halfWidth / 2, wallHeight / 2, halfDepth], Math.PI));
+  group.add(createBrickWall(halfWidth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [halfWidth / 2, wallHeight / 2, halfDepth], Math.PI));
+  group.add(createBrickWall(roomDepth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [-halfWidth, wallHeight / 2, 0], Math.PI / 2));
+  group.add(createBrickWall(roomDepth, wallHeight, createBrickWallMaterial(brickMaps, 2, 2), [halfWidth, wallHeight / 2, 0], -Math.PI / 2));
 
-  function createLantern(pos) {
-    const lanternGroup = new THREE.Group();
-    const base = createCylinder(0.1, 0.15, 0.3, 8, 0x8B4513, [0, 0, 0]);
-    const glass = createCylinder(0.1, 0.1, 0.4, 8, 0xFFD700, [0, 0.3, 0]);
-    glass.material.transparent = true;
-    glass.material.opacity = 0.7;
-    glass.material.emissive = new THREE.Color(0xFFD700);
-    glass.material.emissiveIntensity = 0.8;
-    lanternGroup.add(base, glass);
-    lanternGroup.position.set(...pos);
+  const exteriorBackdrop = new THREE.Mesh(
+    new THREE.PlaneGeometry(roomWidth + 6, wallHeight + 4),
+    new THREE.MeshBasicMaterial({ color: COLORS.wallTechBackdrop })
+  );
+  exteriorBackdrop.position.set(0, wallHeight / 2, -halfDepth - 1.2);
+  group.add(exteriorBackdrop);
 
-    const lanternLight = new THREE.PointLight(0xFFAA00, 0.8, 8);
-    lanternLight.position.set(0, 0.3, 0);
-    lanternGroup.add(lanternLight);
+  const signTexture = createWallTechSignTexture();
+  const sign = new THREE.Mesh(
+    new THREE.PlaneGeometry(8.4, 2.1),
+    new THREE.MeshStandardMaterial({
+      map: signTexture,
+      emissive: new THREE.Color(0x6f4a2a),
+      emissiveMap: signTexture,
+      emissiveIntensity: 0.45,
+      roughness: 0.82,
+      metalness: 0.08,
+    })
+  );
+  sign.position.set(0, 3.45, -halfDepth + 0.08);
+  group.add(sign);
 
-    return lanternGroup;
-  }
+  group.add(createRectAreaLight(0x9aaeff, 4.5, 7, 4, [-halfWidth + 0.35, 3.8, 0], [0, 3.2, 0]));
+  group.add(createRectAreaLight(0xf3aaaa, 4.5, 7, 4, [halfWidth - 0.35, 3.8, 0], [0, 3.2, 0]));
 
-  group.add(createLantern([-3, 1.1, 2]));
-  group.add(createLantern([4, 0.5, -2]));
+  const overhead = new THREE.PointLight(0xfff2d8, 1.2, 24);
+  overhead.position.set(0, wallHeight - 0.6, 0);
+  overhead.castShadow = true;
+  group.add(overhead);
 
-  const couchBase = createBox(3, 0.5, 1.2, 0x4A3728, [0, 0.25, 0]);
-  const couchBack = createBox(3, 1, 0.3, 0x4A3728, [0, 0.75, -0.55]);
-  const couchArm1 = createBox(0.3, 0.7, 1.2, 0x4A3728, [-1.5, 0.35, 0]);
-  const couchArm2 = createBox(0.3, 0.7, 1.2, 0x4A3728, [1.5, 0.35, 0]);
-  group.add(couchBase, couchBack, couchArm1, couchArm2);
-
-  const pianoBody = createBox(2, 1, 0.8, 0x1A1A1A, [5, 0.5, -7]);
-  const pianoTop = createBox(2.1, 0.1, 0.9, 0x1A1A1A, [5, 1.05, -7]);
-  const pianoKeys = createBox(1.8, 0.05, 0.15, 0xFFFFF0, [5, 1, -6.5]);
-  group.add(pianoBody, pianoTop, pianoKeys);
-
-  const blanket = createBox(2, 0.02, 3, COLORS.foil, [-5, 0.02, 2], false);
-  blanket.material.metalness = 1;
-  blanket.material.roughness = 0.2;
-  group.add(blanket);
-
-  for (let i = 0; i < 6; i++) {
-    const book = createBox(0.2, 0.3, 0.4, [0x8B0000, 0x006400, 0x000080][i % 3],
-      [-2 + i * 0.5, 0.15, 3 + Math.random()]);
-    book.rotation.y = Math.random() * Math.PI;
-    group.add(book);
-  }
-
-  const dimLight = new THREE.AmbientLight(0x1a1a1a, 0.3);
-  group.add(dimLight);
+  const fill = new THREE.HemisphereLight(0xf0f0f0, 0x2a1f1a, 0.35);
+  group.add(fill);
 
   return group;
 }
+
+// ============================================
+// CHAPTER 2: GPGPU WATER
+// ============================================
 
 // ============================================
 // CHAPTER 3: MOBILE APPS — FLOATING DEVICES
@@ -593,96 +652,27 @@ function createSaulOffice(zOffset) {
 }
 
 // ============================================
-// CHAPTER 6: FLOATING ISLANDS
-// ============================================
-
-function createFloatingIslands(zOffset) {
-  const group = new THREE.Group();
-  group.position.z = -zOffset;
-
-  function createIsland(width, rockHeight, grassHeight, position, rotationY = 0) {
-    const islandGroup = new THREE.Group();
-    islandGroup.userData.isFloatingIsland = true;
-    islandGroup.userData.floatPhase = Math.random() * Math.PI * 2;
-    islandGroup.userData.floatSpeed = 0.25 + Math.random() * 0.2;
-    islandGroup.userData.hoverOffset = position[1];
-
-    const rock = createCylinder(width, width * 1.35, rockHeight, 8, COLORS.mesaBrown, [0, rockHeight / 2 - grassHeight, 0]);
-    rock.material.roughness = 0.95;
-    islandGroup.add(rock);
-
-    const grass = createCylinder(width * 1.05, width, grassHeight, 12, 0x4c8f4a, [0, grassHeight * 0.35, 0]);
-    grass.material.roughness = 0.9;
-    islandGroup.add(grass);
-
-    islandGroup.position.set(...position);
-    islandGroup.rotation.y = rotationY;
-    return islandGroup;
-  }
-
-  function createTree(position) {
-    const tree = new THREE.Group();
-    const trunk = createCylinder(0.12, 0.16, 0.65, 8, 0x6b4d2e, [0, 0.32, 0]);
-    const leaves = new THREE.Mesh(
-      new THREE.SphereGeometry(0.38, 10, 10),
-      new THREE.MeshStandardMaterial({ color: 0x2f7a3a, roughness: 0.85 })
-    );
-    leaves.position.set(0, 0.78, 0);
-    leaves.castShadow = true;
-    tree.add(trunk, leaves);
-    tree.position.set(...position);
-    return tree;
-  }
-
-  const mainIsland = createIsland(3.2, 2.4, 0.55, [0, 2.2, 0], 0.18);
-  mainIsland.add(createTree([0.65, 0.48, 0.3]));
-  mainIsland.add(createTree([-0.8, 0.48, -0.45]));
-  group.add(mainIsland);
-
-  group.add(createIsland(1.6, 1.25, 0.3, [-3.2, 3.1, -1.4], 0.1));
-  group.add(createIsland(1.45, 1.1, 0.28, [2.8, 3.35, 0.95], -0.22));
-  group.add(createIsland(1.15, 0.85, 0.22, [-1.1, 3.75, 1.65], 0.36));
-  group.add(createIsland(1.0, 0.75, 0.18, [1.3, 3.95, -1.05], -0.14));
-
-  const skyBackdrop = createBox(44, 20, 0.15, COLORS.footerGrey, [0, 6.5, -16], false);
-  skyBackdrop.material.roughness = 1;
-  skyBackdrop.material.metalness = 0;
-  group.add(skyBackdrop);
-
-  const mist = createBox(22, 0.08, 22, COLORS.footerGrey, [0, 0.9, 1.5], false);
-  mist.material.transparent = true;
-  mist.material.opacity = 0.45;
-  group.add(mist);
-
-  const sun = new THREE.DirectionalLight(0xffffff, 0.95);
-  sun.position.set(6, 11, 5);
-  sun.castShadow = true;
-  group.add(sun);
-
-  const skyFill = new THREE.HemisphereLight(0xf0f0f0, COLORS.footerGrey, 0.62);
-  group.add(skyFill);
-
-  const fill = new THREE.AmbientLight(0xe2e2e2, 0.35);
-  group.add(fill);
-
-  return group;
-}
-
-// ============================================
 // BUILD ALL SCENES
 // ============================================
 
 const chapters = [];
 
-chapters.push(createMailroom(0));
-chapters.push(createChucksHouse(SCENE_DEPTH * 1));
+chapters.push(createWallTechRoom(0));
+chapters.push(createWaterChapter(SCENE_DEPTH * 1));
 chapters.push(createFloatingMobileDevices(SCENE_DEPTH * 2));
 chapters.push(createDesert(SCENE_DEPTH * 3));
 chapters.push(createSaulOffice(SCENE_DEPTH * 4));
-chapters.push(createFloatingIslands(SCENE_DEPTH * 5));
+chapters.push(createPostprocessingChapter(SCENE_DEPTH * 5));
 
 chapters.forEach(chapter => scene.add(chapter));
 loadMobileDeviceModels(chapters[2]);
+
+const postComposer = initPostprocessingComposer(renderer, scene, camera);
+
+let waterSystem = null;
+initWaterChapter(renderer, chapters[1]).then((state) => {
+  waterSystem = state;
+});
 
 // ============================================
 // SCROLL HANDLING
@@ -707,32 +697,54 @@ function getStoryScrollProgress() {
   return Math.min(Math.max(scrolled / maxScroll, 0), 1);
 }
 
-function updateScroll() {
-  const scrollProgress = getStoryScrollProgress();
-  targetScroll = scrollProgress;
+function resolveSceneBackdrop(chapterIndex) {
+  if (chapterIndex === 0 || chapterIndex === WATER_CHAPTER_INDEX) return COLORS.wallTechBackdrop;
+  if (chapterIndex === POST_CHAPTER_INDEX) return POST_CHAPTER_FOG;
+  return COLORS.desertNight;
+}
+
+function resolveViewportBackdrop(chapterIndex) {
+  if (chapterIndex === 0 || chapterIndex === WATER_CHAPTER_INDEX) return '#f0bf4c';
+  if (chapterIndex === POST_CHAPTER_INDEX) return '#000000';
+  return '#1a1a2e';
+}
+
+function chapterVisibility(chapterFloat, index) {
+  const distance = Math.abs(chapterFloat - (index + 0.5));
+  return Math.max(0, 1 - distance * 2);
+}
+
+function updateChapterUI(scrollProgress) {
+  const chapterFloat = scrollProgress * CHAPTER_COUNT;
+  const dominantChapter = Math.min(
+    Math.max(Math.floor(chapterFloat + 1e-4), 0),
+    CHAPTER_COUNT - 1
+  );
 
   if (progressFill) {
     progressFill.style.width = `${scrollProgress * 100}%`;
   }
 
-  const currentChapterIndex = Math.min(
-    Math.floor(scrollProgress * CHAPTER_COUNT),
-    CHAPTER_COUNT - 1
-  );
   if (chapterIndicator) {
-    chapterIndicator.textContent = romanNumerals[currentChapterIndex];
+    chapterIndicator.textContent = romanNumerals[dominantChapter];
   }
 
   chapterElements.forEach((el, index) => {
-    const chapterStart = index / CHAPTER_COUNT;
-    const chapterEnd = (index + 1) / CHAPTER_COUNT;
-
-    if (scrollProgress >= chapterStart - 0.1 && scrollProgress <= chapterEnd + 0.1) {
+    const visibility = chapterVisibility(chapterFloat, index);
+    if (visibility > 0.02) {
       el.classList.add('visible');
+      el.style.setProperty('--chapter-opacity', visibility.toFixed(3));
     } else {
       el.classList.remove('visible');
+      el.style.removeProperty('--chapter-opacity');
     }
   });
+}
+
+function updateScroll() {
+  const scrollProgress = getStoryScrollProgress();
+  targetScroll = scrollProgress;
+  updateChapterUI(scrollProgress);
 }
 
 function updatePointerTarget(clientX, clientY) {
@@ -777,6 +789,7 @@ function handleResize() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height, false);
+  postComposer.setSize(width, height);
 }
 
 function animate() {
@@ -790,33 +803,115 @@ function animate() {
   currentScroll += (targetScroll - currentScroll) * 0.05;
   pointerX += (targetPointerX - pointerX) * POINTER_SMOOTHING;
   pointerY += (targetPointerY - pointerY) * POINTER_SMOOTHING;
+  updateChapterUI(currentScroll);
 
+  const chapterFloat = currentScroll * CHAPTER_COUNT;
   const activeChapter = Math.min(
-    Math.floor(currentScroll * CHAPTER_COUNT),
+    Math.max(Math.floor(chapterFloat + 1e-4), 0),
     CHAPTER_COUNT - 1
   );
-  const footerSceneActive = activeChapter === CHAPTER_COUNT - 1;
-  scene.background.set(footerSceneActive ? COLORS.footerGrey : COLORS.desertNight);
-  if (scene.fog) {
-    scene.fog.color.set(footerSceneActive ? COLORS.footerGrey : COLORS.desertNight);
+  const waterInfluence = chapterVisibility(chapterFloat, WATER_CHAPTER_INDEX);
+  const postInfluence = chapterVisibility(chapterFloat, POST_CHAPTER_INDEX);
+  const sceneBackdrop = resolveSceneBackdrop(activeChapter);
+
+  if (waterInfluence > 0.02) {
+    scene.background.set(COLORS.wallTechBackdrop);
+    scene.backgroundBlurriness = 0;
+    if (waterSystem?.environmentMap) {
+      scene.environment = waterSystem.environmentMap;
+      if ('environmentIntensity' in scene) {
+        scene.environmentIntensity = THREE.MathUtils.lerp(1, 0.55, waterInfluence);
+      }
+    } else {
+      scene.environment = null;
+    }
+    if (!scene.fog) {
+      scene.fog = new THREE.Fog(COLORS.wallTechBackdrop, 10, 80);
+    }
+    scene.fog.color.set(COLORS.wallTechBackdrop);
+    renderer.toneMappingExposure = THREE.MathUtils.lerp(1.2, 0.65, waterInfluence);
+    if (viewport) {
+      viewport.style.background = '#f0bf4c';
+    }
+  } else if (postInfluence > 0.02) {
+    scene.background.set(POST_CHAPTER_FOG);
+    scene.environment = null;
+    scene.backgroundBlurriness = 0;
+    if ('environmentIntensity' in scene) {
+      scene.environmentIntensity = 1;
+    }
+    if (!scene.fog) {
+      scene.fog = new THREE.Fog(POST_CHAPTER_FOG, 1, 1000);
+    } else {
+      scene.fog.near = 1;
+      scene.fog.far = 1000;
+      scene.fog.color.set(POST_CHAPTER_FOG);
+    }
+    renderer.toneMappingExposure = 1.2;
+    if (viewport) {
+      viewport.style.background = '#000000';
+    }
+  } else {
+    scene.background.set(sceneBackdrop);
+    scene.environment = null;
+    scene.backgroundBlurriness = 0;
+    if ('environmentIntensity' in scene) {
+      scene.environmentIntensity = 1;
+    }
+    if (!scene.fog) {
+      scene.fog = new THREE.Fog(COLORS.desertNight, 10, 80);
+    } else {
+      scene.fog.near = 10;
+      scene.fog.far = 80;
+    }
+    scene.fog.color.set(sceneBackdrop);
+    renderer.toneMappingExposure = 1.2;
+    if (viewport) {
+      viewport.style.background = resolveViewportBackdrop(activeChapter);
+    }
   }
 
   // Camera movement through scenes
   const totalDepth = SCENE_DEPTH * (CHAPTER_COUNT - 1);
-  camera.position.z = 5 - currentScroll * totalDepth;
-
-  // Subtle camera movements with mouse-driven parallax and look
+  const chapterWorldZ = -SCENE_DEPTH;
   const driftX = Math.sin(elapsed * 0.3) * 0.5;
   const driftY = 2 + Math.sin(elapsed * 0.2) * 0.2;
-  camera.position.x = driftX + pointerX * MOUSE_PARALLAX.x;
-  camera.position.y = driftY + pointerY * MOUSE_PARALLAX.y;
 
-  cameraLookTarget.set(
+  defaultCameraPosition.set(
+    driftX + pointerX * MOUSE_PARALLAX.x,
+    driftY + pointerY * MOUSE_PARALLAX.y,
+    5 - currentScroll * totalDepth
+  );
+  defaultLookTarget.set(
     pointerX * MOUSE_LOOK.yaw * MOUSE_LOOK.distance,
     MOUSE_LOOK.height + pointerY * MOUSE_LOOK.pitch * MOUSE_LOOK.distance * 0.35,
-    camera.position.z - MOUSE_LOOK.distance
+    defaultCameraPosition.z - MOUSE_LOOK.distance
   );
-  camera.lookAt(cameraLookTarget);
+
+  waterCameraPosition.set(
+    pointerX * MOUSE_PARALLAX.x * 0.2,
+    2.0 + pointerY * 0.04,
+    chapterWorldZ + WATER_CAMERA_DISTANCE
+  );
+  waterLookTarget.set(0, 0.15, chapterWorldZ);
+
+  const waterFov = THREE.MathUtils.lerp(60, 68, waterInfluence);
+  camera.fov = waterFov;
+  camera.updateProjectionMatrix();
+
+  camera.position.lerpVectors(defaultCameraPosition, waterCameraPosition, waterInfluence);
+  blendedLookTarget.lerpVectors(defaultLookTarget, waterLookTarget, waterInfluence);
+  camera.lookAt(blendedLookTarget);
+
+  if (waterSystem) {
+    waterSystem.update(waterInfluence > 0.05);
+  }
+
+  const postRoot = chapters[POST_CHAPTER_INDEX].userData.postRoot;
+  if (postRoot && postInfluence > 0.02) {
+    postRoot.rotation.x += 0.005 * postInfluence;
+    postRoot.rotation.y += 0.01 * postInfluence;
+  }
 
   // Gentle drift for floating mobile devices
   const mobileGroup = chapters[2];
@@ -835,21 +930,8 @@ function animate() {
     child.rotation.z = Math.sin(elapsed * 0.4 + phase) * 0.05;
   });
 
-  // Gentle bob for floating islands
-  const islandGroup = chapters[5];
-  islandGroup.traverse((child) => {
-    if (!child.userData.isFloatingIsland) return;
-
-    const phase = child.userData.floatPhase;
-    const speed = child.userData.floatSpeed;
-    const baseY = child.userData.hoverOffset;
-
-    child.position.y = baseY + Math.sin(elapsed * speed + phase) * 0.18;
-  });
-
-  // Rotate tumbleweed in desert scene
   const desertGroup = chapters[3];
-  desertGroup.children.forEach(child => {
+  desertGroup.children.forEach((child) => {
     if (child.userData.isTumbleweed) {
       child.rotation.x += delta * 2;
       child.rotation.z += delta * 1.5;
@@ -870,7 +952,11 @@ function animate() {
     }
   });
 
-  renderer.render(scene, camera);
+  if (postInfluence > 0.08) {
+    postComposer.render();
+  } else {
+    renderer.render(scene, camera);
+  }
 }
 
 window.addEventListener('resize', handleResize);
